@@ -248,7 +248,7 @@ def save_config():
     global config
     config.save_user_datas()
     # config 保存为json文件
-    with open(os.path.join(get_appdata_dir(), "config.json"), "w", encoding="utf-8") as f:
+    with open("schedule/config.json", "w", encoding="utf-8") as f:
         f.write(json.dumps(config, ensure_ascii=False, indent=4))
         logging.info("[Config] Config saved.")
 

@@ -9,6 +9,7 @@ import requests
 from .config import conf, load_config, save_config
 from .logger import logger
 
+
 def load_key_words():
     # 读取key_words.txt, 返回关键词列表
     with open("schedule/key_words.txt") as f:
