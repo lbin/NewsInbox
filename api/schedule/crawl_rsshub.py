@@ -167,7 +167,7 @@ def run():
     
 
 
-if __name__ == "__main__":
-    while True:
-        run()
-        time.sleep(60 * 10 * 3)
+# if __name__ == "__main__":
+#     while True:
+#         run()
+#         time.sleep(60 * 10 * 3)

@@ -48,6 +48,6 @@ def init_app(app: Flask) -> Celery:
             "schedule": crontab(minute=0, hour="0,4,8,12,16,20"),
         }
     }
-    celery_app.conf.update(beat_schedule=beat_schedule, imports=imports)
+    celery_app.conf.update(beat_schedule=beat_schedule, imports=imports, timezone="Asia/Shanghai", enable_utc=False)
 
     return celery_app
