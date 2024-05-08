@@ -1,6 +1,6 @@
-from datetime import timedelta
 
 from celery import Celery, Task
+from celery.schedules import crontab
 from flask import Flask
 
 
@@ -40,18 +40,13 @@ def init_app(app: Flask) -> Celery:
     app.extensions["celery"] = celery_app
 
     imports = [
-        "schedule.clean_embedding_cache_task",
-        "schedule.clean_unused_datasets_task",
+        "schedule.crawl_from_rsshub_task",
     ]
 
     beat_schedule = {
-        'clean_embedding_cache_task': {
-            'task': 'schedule.clean_embedding_cache_task.clean_embedding_cache_task',
-            'schedule': timedelta(days=1),
-        },
-        'clean_unused_datasets_task': {
-            'task': 'schedule.clean_unused_datasets_task.clean_unused_datasets_task',
-            'schedule': timedelta(days=1),
+        'crawl_from_rsshub_task': {
+            'task': 'schedule.crawl_from_rsshub_task.crawl_from_rsshub_task',
+            'schedule': crontab(hour=8),
         }
     }
     celery_app.conf.update(

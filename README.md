@@ -7,7 +7,8 @@
 ## Installation
 
 ```bash
-docker-compose -f docker-compose.middleware.yaml -p dify up -d
+docker-compose -f docker-compose.middleware.yaml -p newsinbox up -d
+celery -A app.celery beat --loglevel INFO
 ```
 
 ## Supported News

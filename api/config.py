@@ -67,11 +67,11 @@ DEFAULTS = {
     'INVITE_EXPIRY_HOURS': 72,
     'BILLING_ENABLED': 'False',
     'CAN_REPLACE_LOGO': 'False',
-    'ETL_TYPE': 'dify',
+    'ETL_TYPE': 'newsinbox',
     'KEYWORD_STORE': 'jieba',
     'BATCH_UPLOAD_LIMIT': 20,
     'CODE_EXECUTION_ENDPOINT': 'http://sandbox:8194',
-    'CODE_EXECUTION_API_KEY': 'dify-sandbox',
+    'CODE_EXECUTION_API_KEY': 'newsinbox-sandbox',
     'TOOL_ICON_CACHE_MAX_AGE': 3600,
     'MILVUS_DATABASE': 'default',
     'KEYWORD_DATA_SOURCE_TYPE': 'database',
@@ -186,7 +186,7 @@ class Config:
         self.REDIS_PASSWORD = get_env('REDIS_PASSWORD')
         self.REDIS_DB = get_env('REDIS_DB')
         self.REDIS_USE_SSL = get_bool_env('REDIS_USE_SSL')
-
+        
         # ------------------------
         # Celery worker Configurations.
         # ------------------------
@@ -348,7 +348,7 @@ class Config:
         self.HOSTED_MODERATION_ENABLED = get_bool_env('HOSTED_MODERATION_ENABLED')
         self.HOSTED_MODERATION_PROVIDERS = get_env('HOSTED_MODERATION_PROVIDERS')
 
-        # fetch app templates mode, remote, builtin, db(only for dify SaaS), default: remote
+        # fetch app templates mode, remote, builtin, db(only for newsinbox SaaS), default: remote
         self.HOSTED_FETCH_APP_TEMPLATES_MODE = get_env('HOSTED_FETCH_APP_TEMPLATES_MODE')
         self.HOSTED_FETCH_APP_TEMPLATES_REMOTE_DOMAIN = get_env('HOSTED_FETCH_APP_TEMPLATES_REMOTE_DOMAIN')
 
