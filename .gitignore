@@ -163,3 +163,8 @@ cython_debug/
 .env
 /docker/volumes
 config.json
+*.log
+*.db
+nohup.out
+*.pkl
+celerybeat-schedule.db

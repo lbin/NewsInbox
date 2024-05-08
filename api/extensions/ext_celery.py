@@ -1,4 +1,3 @@
-
 from celery import Celery, Task
 from celery.schedules import crontab
 from flask import Flask
@@ -17,7 +16,7 @@ def init_app(app: Flask) -> Celery:
         backend=app.config["CELERY_BACKEND"],
         task_ignore_result=True,
     )
-    
+
     # Add SSL options to the Celery configuration
     ssl_options = {
         "ssl_cert_reqs": None,
@@ -35,7 +34,7 @@ def init_app(app: Flask) -> Celery:
         celery_app.conf.update(
             broker_use_ssl=ssl_options,  # Add the SSL options to the broker configuration
         )
-        
+
     celery_app.set_default()
     app.extensions["celery"] = celery_app
 
@@ -44,14 +43,12 @@ def init_app(app: Flask) -> Celery:
     ]
 
     beat_schedule = {
-        'crawl_from_rsshub_task': {
-            'task': 'schedule.crawl_from_rsshub_task.crawl_from_rsshub_task',
-            'schedule': crontab(hour=8),
+        "crawl_from_rsshub_task": {
+            "task": "schedule.crawl_from_rsshub_task.crawl_from_rsshub_task",
+            # 'schedule': crontab(hour=8),
+            "schedule": crontab(hour="0,4,8,12,16,20"),
         }
     }
-    celery_app.conf.update(
-        beat_schedule=beat_schedule,
-        imports=imports
-    )
+    celery_app.conf.update(beat_schedule=beat_schedule, imports=imports)
 
     return celery_app

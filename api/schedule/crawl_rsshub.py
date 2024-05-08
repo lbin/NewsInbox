@@ -1,18 +1,17 @@
 import html
 import json
-import logging
 import time
 from urllib.parse import urlparse
 
 import feedparser
 import requests
 
-from config import conf, load_config, save_config
-
+from .config import conf, load_config, save_config
+from .logger import logger
 
 def load_key_words():
     # 读取key_words.txt, 返回关键词列表
-    with open("apps/key_words.txt") as f:
+    with open("schedule/key_words.txt") as f:
         key_words = f.readlines()
         key_words = [word.strip() for word in key_words]
     return key_words
@@ -32,7 +31,7 @@ def send_to_feishu(content, key_words, url, sender, title=None):
         json_data = json_data.replace("\n", "")
         json_data = json_data.replace(" ", "")
         json_data = json_data[1:]
-        logging.info("json_data: {}".format(json_data))
+        logger.info("json_data: {}".format(json_data))
 
         json_data = json.loads(json_data)
 
@@ -64,18 +63,18 @@ def send_to_feishu(content, key_words, url, sender, title=None):
 
         tags = json_data["tags"]
         for tag in tags:
-            logging.info("标签: {}".format(tag))
+            logger.info("标签: {}".format(tag))
 
         for key_word in key_words:
             for tag in tags:
                 if key_word in tag:
-                    logging.info("关键词匹配成功: key_word-{} tag-{}".format(key_word, tag))
+                    logger.info("关键词匹配成功: key_word-{} tag-{}".format(key_word, tag))
 
                     new_data = {"fields": new_json_data}
                     status = requests.post(feishu_add_record_url, headers=feishu_headers, json=new_data)
                     return status
     except Exception as e:
-        logging.error("Error: {}".format(e))
+        logger.error("Error: {}".format(e))
         return None
 
     return None
@@ -113,7 +112,7 @@ def sum4all(url):
         result = response.json()["choices"][0]["message"]["content"]
         return result
     except Exception as e:
-        logging.error("Error: {}".format(e))
+        logger.error("Error: {}".format(e))
         return None
 
 
@@ -123,13 +122,13 @@ def feed_parser(rss, key_words, sender):
     new_rss = rss
 
     if feed.bozo:
-        logging.warn("解析失败")
+        logger.warn("解析失败")
         return rss
     else:
-        logging.info("{}".format(feed.updated))
+        logger.info("{}".format(feed.updated))
 
         if feed.updated == rss["rss_last_updated"]:
-            logging.info("No new feed")
+            logger.info("No new feed")
             return rss
         else:
             new_rss["rss_last_updated"] = feed.updated
@@ -138,10 +137,10 @@ def feed_parser(rss, key_words, sender):
             old_title = rss["rss_last_updated_title"]
 
             for entry in feed.entries:
-                logging.info("标题: {}".format(entry.title))
-                logging.info("链接: {}".format(entry.link))
+                logger.info("标题: {}".format(entry.title))
+                logger.info("链接: {}".format(entry.link))
                 if entry.title == old_title:
-                    logging.info("已经解析过")
+                    logger.info("已经解析过")
                     return new_rss
                 else:
                     if update_title_flag is False:
