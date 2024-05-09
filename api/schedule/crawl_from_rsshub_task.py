@@ -36,9 +36,10 @@ def send_to_feishu(content, key_words, url, sender, title=None):
         
 
         json_data = json.loads(json_data)
+        config = conf()
 
         headers = {"Content-Type": "application/json; charset=utf-8"}
-        token_json_data = {"app_id": "cli_a6bafbc7acbdd013", "app_secret": "8U3AAH3AOPtwVOFdWusswctp5EOcqFM5"}
+        token_json_data = {"app_id": config.get('feishu_app_id'), "app_secret": config.get('feishu_app_secret')}
         feishu_token_response = requests.post(feishu_get_token_url, headers=headers, json=token_json_data)
 
         feishu_headers = {
@@ -64,8 +65,6 @@ def send_to_feishu(content, key_words, url, sender, title=None):
         }
 
         tags = json_data["tags"]
-        for tag in tags:
-            logger.info("标签: {}".format(tag))
 
         for key_word in key_words:
             for tag in tags:
@@ -88,11 +87,13 @@ def _get_jina_url(target_url):
 
 
 def _get_openai_payload(target_url_content):
-    prompt = "我需要对下面引号内文档进行总结，总结输出包括以下三个部分:\n一句话总结\n关键要点,用数字序号列出3-5个文章的核心内容\n标签: #xx #xx #xx. 以JSON格式返回: {summury: 总结的内容, key_points: 1、关键要点1; 2、关键要点; 3、关键要点, tags: [#xx, #xx, #xx]}"
+    config = conf()
+    prompt = config.get('prompt')
     target_url_content = target_url_content[:8000]  # 通过字符串长度简单进行截断
     sum_prompt = f"{prompt}\n\n'''{target_url_content}'''"
     messages = [{"role": "user", "content": sum_prompt}]
-    payload = {"model": "moonshot-v1-8k", "messages": messages}
+    # payload = {"model": "moonshot-v1-8k", "messages": messages}
+    payload = {"model": config.get('open_ai_model'), "messages": messages}
     return payload
 
 
@@ -103,10 +104,17 @@ def sum4all(url):
         response = requests.get(jina_url, timeout=60)
         response.raise_for_status()
         target_url_content = response.text
-        open_ai_api_base = "https://api.moonshot.cn/v1"
-        open_ai_api_key = "sk-I10kI0VKjld1LDx5AwFOHP4YSHF5rGkkDBaBTa5IEiNEnbiE"
-
-        openai_chat_url = "https://api.moonshot.cn/v1/chat/completions"
+        
+        config = conf()
+        
+        # open_ai_api_base = "https://api.moonshot.cn/v1"
+        # open_ai_api_key = "sk-I10kI0VKjld1LDx5AwFOHP4YSHF5rGkkDBaBTa5IEiNEnbiE"
+        # openai_chat_url = "https://api.moonshot.cn/v1/chat/completions"
+        
+        open_ai_api_base = config.get("open_ai_api_base")
+        open_ai_api_key = config.get("open_ai_api_key")
+        openai_chat_url = config.get("openai_chat_url")
+        
         openai_headers = {"Authorization": f"Bearer {open_ai_api_key}", "Host": urlparse(open_ai_api_base).netloc}
         openai_payload = _get_openai_payload(target_url_content)
         response = requests.post(openai_chat_url, headers=openai_headers, json=openai_payload, timeout=60)
