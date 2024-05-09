@@ -24,15 +24,14 @@ def send_to_feishu(content, key_words, url, sender, title=None):
         "https://open.feishu.cn/open-apis/bitable/v1/apps/DM8Ib7DNeah45XsA8kOcxvYenHd/tables/tblELLHLYuKXsVf9/records"
     )
     try:
+        logger.info("content: {}".format(content))
         data_index = content.find("json")
-        # user = content[1 : data_index - 3]
-        # user = user.replace("\n", "")
 
         json_data = content[data_index + 3 : -3]
         json_data = json_data.replace("\n", "")
         json_data = json_data.replace(" ", "")
         json_data = json_data[1:]
-        logger.info("json_data: {}".format(json_data))
+        
 
         json_data = json.loads(json_data)
 
