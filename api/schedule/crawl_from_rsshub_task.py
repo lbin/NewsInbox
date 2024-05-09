@@ -107,10 +107,6 @@ def sum4all(url):
         
         config = conf()
         
-        # open_ai_api_base = "https://api.moonshot.cn/v1"
-        # open_ai_api_key = "sk-I10kI0VKjld1LDx5AwFOHP4YSHF5rGkkDBaBTa5IEiNEnbiE"
-        # openai_chat_url = "https://api.moonshot.cn/v1/chat/completions"
-        
         open_ai_api_base = config.get("open_ai_api_base")
         open_ai_api_key = config.get("open_ai_api_key")
         openai_chat_url = config.get("openai_chat_url")
@@ -127,9 +123,15 @@ def sum4all(url):
 
 
 def feed_parser(rss, key_words, sender):
-    feed = feedparser.parse(rss["rss_url"])
+    config = conf()
+    url = config.get("rss_base_url") + rss["rss_url"]
+    feed = feedparser.parse(url)
 
-    new_rss = rss
+    new_rss = {}
+    new_rss["rss_name"] = rss["rss_name"]
+    new_rss["rss_url"] = rss["rss_url"]
+    new_rss["rss_last_updated"] = rss["rss_last_updated"]
+    new_rss["rss_last_updated_title"] = rss["rss_last_updated_title"]
 
     if feed.bozo:
         logger.warn("解析失败")
@@ -147,6 +149,7 @@ def feed_parser(rss, key_words, sender):
             old_title = rss["rss_last_updated_title"]
 
             for entry in feed.entries:
+                entry.title = entry.title.replace(" ", "")
                 logger.info("标题: {}".format(entry.title))
                 logger.info("链接: {}".format(entry.link))
                 if entry.title == old_title:
