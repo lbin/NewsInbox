@@ -161,7 +161,7 @@ def feed_parser(rss, key_words, sender):
                         update_title_flag = True
                     content = sum4all(entry.link)
                     send_to_feishu(content, key_words, entry.link, sender, entry.title)
-                    time.sleep(60 * 2)
+                    time.sleep(60)
             return new_rss
 
 @app.celery.task
@@ -174,8 +174,10 @@ def crawl_from_rsshub_task():
     for rss in rss_group:
         new_rss = feed_parser(rss, key_words, rss["rss_name"])
         new_rss_group.append(new_rss)
-        time.sleep(60 * 2)
+        time.sleep(60)
+    logger.info("初始配置: {}".format(config))
     config["rss_group"] = new_rss_group
+    logger.info("更新配置: {}".format(config))
     save_config()
     
 
