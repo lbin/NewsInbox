@@ -17,13 +17,13 @@ nohup celery -A app.celery worker --loglevel INFO -P gevent &
 
 - [x] 36kr
 - [x] InfoQ
-- [x] 差评 not updating
+- [ ] 差评 not updating
 - [x] ReadHub
 - [x] 东西智库
 - [x] DeepMind
-- [x] 量子位/tag
+- [ ] 量子位/tag
 - [x] 品玩
 - [x] 人人都是产品经理
 - [x] 少数派
-- [x] X
+- [ ] X
   - [ ] Elon Musk
