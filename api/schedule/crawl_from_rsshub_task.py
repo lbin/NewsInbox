@@ -64,10 +64,15 @@ def send_to_feishu(content, key_words, url, sender, title=None):
             "添加人": "Bot",
         }
 
+        logger.info("#tags: {}".format(tags))
         tags = json_data["tags"]
+        for tag in tags:
+            tag = tag.replace("#", "")
+        logger.info("tags: {}".format(tags))
 
         for key_word in key_words:
             for tag in tags:
+                
                 if key_word in tag:
                     logger.info("关键词匹配成功: key_word-{} tag-{}".format(key_word, tag))
 
