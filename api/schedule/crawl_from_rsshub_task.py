@@ -110,7 +110,7 @@ def _get_jina_url(target_url):
 def _get_openai_payload(target_url_content):
     config = conf()
     prompt = config.get('prompt')
-    target_url_content = target_url_content[:8000]  # 通过字符串长度简单进行截断
+    target_url_content = target_url_content[:config.get('max_words')]  # 通过字符串长度简单进行截断
     sum_prompt = f"{prompt}\n\n'''{target_url_content}'''"
     messages = [{"role": "user", "content": sum_prompt}]
     # payload = {"model": "moonshot-v1-8k", "messages": messages}
