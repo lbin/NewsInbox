@@ -31,11 +31,11 @@ nohup celery -A app.celery worker --loglevel INFO -P gevent &
 
 - [ ] ~~AI产品榜/Kaixinhanguoyu~~
 - [ ] Founder Park/Founder-Park
-- [ ] 量子位/QbitAI
+- [x] 量子位/QbitAI
 - [ ] 世界人工智能大会/gh_00d68db4a358
-- [ ] 甲子光年/jazzyear
+- [x] 甲子光年/jazzyear
 - [ ] DeepTech深科技/deeptechchina
-- [ ] 新智元/AI_era
+- [x] 新智元/AI_era
 - [ ] 机器之心/almosthuman2014
 - [ ] 讯飞AIEd/XFjyjsyjy
 - [ ] AgeClub/AgeClub

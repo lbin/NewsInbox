@@ -149,8 +149,10 @@ def feed_parser(rss, key_words):
     rss_json_file = 'schedule/rss_configs/'+ rss
     with open(rss_json_file) as json_file:
         rss_config = json.load(json_file)
-    
-    url = config.get("rss_base_url") + rss_config["rss_url"]
+        
+    if rss_config["rss_url"].startswith("http") is False:
+        url = config.get("rss_base_url") + rss_config["rss_url"]
+        
     feed = feedparser.parse(url)
 
     if feed.bozo:
