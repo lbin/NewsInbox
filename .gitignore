@@ -169,4 +169,5 @@ config_bak.json
 nohup.out
 *.pkl
 celerybeat-schedule
-/api/schedule/rss_configs
+/api/schedule/rss_configs/
+/api/schedule/data
