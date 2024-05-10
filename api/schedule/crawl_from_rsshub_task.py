@@ -76,24 +76,21 @@ def send_to_feishu(content, key_words, url, sender, title=None):
             new_tags.append(tag)
         tags = new_tags
         logger.info("tags: {}".format(tags))
+        
+        # Generate file name based on current time and sender
+        current_date = datetime.datetime.now().strftime("%Y-%m-%d")
+        folder_path = f"./schedule/data/{current_date}"
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+        file_name = f"{folder_path}/{datetime.datetime.now().strftime('%H-%M-%S')}_{sender}.json"
+        # Save new_json_data to json file
+        with open(file_name, "w") as json_file:
+            json.dump(new_json_data, json_file, ensure_ascii=False, indent=4)
 
         for key_word in key_words:
             for tag in tags:
-                
                 if key_word in tag:
                     logger.info("关键词匹配成功: key_word-{} tag-{}".format(key_word, tag))
-                    
-                    # Generate file name based on current time and sender
-                    current_date = datetime.datetime.now().strftime("%Y-%m-%d")
-                    folder_path = f"./schedule/data/{current_date}"
-                    if not os.path.exists(folder_path):
-                        os.makedirs(folder_path)
-
-                    file_name = f"{folder_path}/{datetime.datetime.now().strftime('%H-%M-%S')}_{sender}.json"
-
-                    # Save new_json_data to json file
-                    with open(file_name, "w") as json_file:
-                        json.dump(new_json_data, json_file, ensure_ascii=False, indent=4)
 
                     new_data = {"fields": new_json_data}
                     status = requests.post(feishu_add_record_url, headers=feishu_headers, json=new_data)
