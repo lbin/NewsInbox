@@ -177,6 +177,7 @@ available_setting = {
     "prompt": "我需要对下面引号内文档进行总结, 总结输出包括以下四个部分:\n标题\n一句话总结\n关键要点,用数字序号列出3-5个文章的核心内容\n标签: #xx #xx #xx. 以JSON格式返回: {title: 标题, summury: 总结的内容, key_points: {'1': 关键要点1; '2': 关键要点; '3': 关键要点}, tags: [#xx, #xx, #xx]}",
     "max_words": 8000,
     "jina_reader_base": "https://r.jina.ai",
+    "rss_interval": 60,
     "rss_base_url": "",
     "rss_group": [
         "36kr.json", "readhub.json", "dx2025.json", "infoq.json", "pingwest.json", "qbitai.json", "sspai.json", "woshipm.json"

@@ -125,7 +125,7 @@ def sum4all(url):
 def feed_parser(rss, key_words):
     config = conf()
     
-    rss_json_file = 'schedule/'+ rss
+    rss_json_file = 'schedule/rss_configs/'+ rss
     with open(rss_json_file) as json_file:
         rss_config = json.load(json_file)
     
@@ -138,7 +138,7 @@ def feed_parser(rss, key_words):
     else:
         logger.info("{}".format(feed.updated))
 
-        if feed.updated == rss["rss_last_updated"]:
+        if feed.updated == rss_config["rss_last_updated"]:
             logger.info("{} No New Feed".format(rss_config['rss_name']))
             return rss
         else:
@@ -154,17 +154,17 @@ def feed_parser(rss, key_words):
                 if entry.title == old_title:
                     logger.info("已经解析过")
                     with open(rss_json_file, "w") as json_file:
-                        json.dump(rss_config, json_file)
+                        json.dump(rss_config, json_file, ensure_ascii=False, indent=4)
                     return None
                 else:
                     if update_title_flag is False:
                         rss_config["rss_last_updated_title"] = entry.title
                         update_title_flag = True
                         with open(rss_json_file, "w") as json_file:
-                            json.dump(rss_config, json_file)
+                            json.dump(rss_config, json_file, ensure_ascii=False, indent=4)
                     content = sum4all(entry.link)
                     send_to_feishu(content, key_words, entry.link, rss_config['rss_name'], entry.title)
-                    time.sleep(60)
+                    time.sleep(config.get("rss_interval"))
 
             return None
 
@@ -177,12 +177,6 @@ def crawl_from_rsshub_task():
     rss_group = config.get("rss_group", {})
     
     for rss in rss_group:
-        logger.info("{RSS Source: }".format())
+        logger.info("RSS Source: {}".format(rss))
         feed_parser(rss, key_words)
-        time.sleep(60)
-
-
-if __name__ == "__main__":
-    while True:
-        crawl_from_rsshub_task()
-        time.sleep(60 * 10 * 3)
+        time.sleep(config.get("rss_interval"))
