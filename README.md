@@ -25,6 +25,7 @@ nohup celery -A app.celery worker --loglevel INFO -P gevent &
 - [x] 品玩
 - [x] 人人都是产品经理
 - [x] 少数派
+- [x] Latepost
 - [ ] X
   - [ ] Elon Musk
 

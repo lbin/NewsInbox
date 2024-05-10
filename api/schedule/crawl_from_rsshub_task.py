@@ -54,17 +54,6 @@ def send_to_feishu(content, key_words, url, sender, title=None):
             key_points_str += json_data["key_points"][key] + "\n"
 
         send_title = title if title else json_data["summary"]
-
-        new_json_data = {
-            "分类": "Technology",
-            "标签": json_data["tags"],
-            "项目名称": send_title,
-            "来源": url,
-            "总结": json_data["summary"],
-            "关键要点": key_points_str,
-            "项目来源": sender,
-            "添加人": "Bot",
-        }
         
         tags = json_data["tags"]
         logger.info("#tags: {}".format(tags))
@@ -76,6 +65,17 @@ def send_to_feishu(content, key_words, url, sender, title=None):
             new_tags.append(tag)
         tags = new_tags
         logger.info("tags: {}".format(tags))
+        
+        new_json_data = {
+            "分类": "Technology",
+            "标签": tags,
+            "项目名称": send_title,
+            "来源": url,
+            "总结": json_data["summary"],
+            "关键要点": key_points_str,
+            "项目来源": sender,
+            "添加人": "Bot",
+        }
         
         # Generate file name based on current time and sender
         current_date = datetime.datetime.now().strftime("%Y-%m-%d")
