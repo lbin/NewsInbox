@@ -45,7 +45,7 @@ def init_app(app: Flask) -> Celery:
     beat_schedule = {
         "crawl_from_rsshub_task": {
             "task": "schedule.crawl_from_rsshub_task.crawl_from_rsshub_task",
-            "schedule": crontab(minute=0, hour="0, 6, 8, 10, 12, 14, 16, 18, 20"),
+            "schedule": crontab(minute=0, hour="0, 9, 15, 21"),
         }
     }
     celery_app.conf.update(beat_schedule=beat_schedule, imports=imports, timezone="Asia/Shanghai", enable_utc=False)

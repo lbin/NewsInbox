@@ -168,4 +168,4 @@ config_bak.json
 *.db
 nohup.out
 *.pkl
-celerybeat-schedule.*
+celerybeat-schedule
