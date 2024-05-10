@@ -8,7 +8,7 @@ import requests
 
 import app
 
-from .config import conf, load_config, save_config
+from .config import conf, load_config
 from .logger import logger
 
 
@@ -122,16 +122,15 @@ def sum4all(url):
         return None
 
 
-def feed_parser(rss, key_words, sender):
+def feed_parser(rss, key_words):
     config = conf()
-    url = config.get("rss_base_url") + rss["rss_url"]
+    
+    rss_json_file = 'schedule/'+ rss
+    with open(rss_json_file) as json_file:
+        rss_config = json.load(json_file)
+    
+    url = config.get("rss_base_url") + rss_config["rss_url"]
     feed = feedparser.parse(url)
-
-    new_rss = {}
-    new_rss["rss_name"] = rss["rss_name"]
-    new_rss["rss_url"] = rss["rss_url"]
-    new_rss["rss_last_updated"] = rss["rss_last_updated"]
-    new_rss["rss_last_updated_title"] = rss["rss_last_updated_title"]
 
     if feed.bozo:
         logger.warn("解析失败")
@@ -140,13 +139,13 @@ def feed_parser(rss, key_words, sender):
         logger.info("{}".format(feed.updated))
 
         if feed.updated == rss["rss_last_updated"]:
-            logger.info("No new feed")
+            logger.info("{} No New Feed".format(rss_config['rss_name']))
             return rss
         else:
-            new_rss["rss_last_updated"] = feed.updated
+            rss_config["rss_last_updated"] = feed.updated
 
             update_title_flag = False
-            old_title = rss["rss_last_updated_title"]
+            old_title = rss_config["rss_last_updated_title"]
 
             for entry in feed.entries:
                 entry.title = entry.title.replace(" ", "")
@@ -154,32 +153,33 @@ def feed_parser(rss, key_words, sender):
                 logger.info("链接: {}".format(entry.link))
                 if entry.title == old_title:
                     logger.info("已经解析过")
-                    return new_rss
+                    with open(rss_json_file, "w") as json_file:
+                        json.dump(rss_config, json_file)
+                    return None
                 else:
                     if update_title_flag is False:
-                        new_rss["rss_last_updated_title"] = entry.title
+                        rss_config["rss_last_updated_title"] = entry.title
                         update_title_flag = True
+                        with open(rss_json_file, "w") as json_file:
+                            json.dump(rss_config, json_file)
                     content = sum4all(entry.link)
-                    send_to_feishu(content, key_words, entry.link, sender, entry.title)
+                    send_to_feishu(content, key_words, entry.link, rss_config['rss_name'], entry.title)
                     time.sleep(60)
-            return new_rss
+
+            return None
 
 @app.celery.task
 def crawl_from_rsshub_task():
     key_words = load_key_words()
+    
     load_config()
     config = conf()
     rss_group = config.get("rss_group", {})
-    new_rss_group = []
-    for rss in rss_group:
-        new_rss = feed_parser(rss, key_words, rss["rss_name"])
-        new_rss_group.append(new_rss)
-        time.sleep(60)
-    logger.info("初始配置: {}".format(config))
-    config["rss_group"] = new_rss_group
-    logger.info("更新配置: {}".format(config))
-    save_config()
     
+    for rss in rss_group:
+        logger.info("{RSS Source: }".format())
+        feed_parser(rss, key_words)
+        time.sleep(60)
 
 
 if __name__ == "__main__":

@@ -179,12 +179,7 @@ available_setting = {
     "jina_reader_base": "https://r.jina.ai",
     "rss_base_url": "",
     "rss_group": [
-        {
-            "rss_name": "36kr",
-            "rss_url": "/36kr/news",
-            "rss_last_updated": "Tue, 07 May 2024 03:44:44 GMT",
-            "rss_last_updated_title": "中年男人的神车信仰, 崩塌了"
-        }
+        "36kr.json", "readhub.json", "dx2025.json", "infoq.json", "pingwest.json", "qbitai.json", "sspai.json", "woshipm.json"
     ]
 }
 
