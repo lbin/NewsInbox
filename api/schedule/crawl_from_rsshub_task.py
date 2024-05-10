@@ -152,6 +152,8 @@ def feed_parser(rss, key_words):
         
     if rss_config["rss_url"].startswith("http") is False:
         url = config.get("rss_base_url") + rss_config["rss_url"]
+    else:
+        url = rss_config["rss_url"]
         
     feed = feedparser.parse(url)
 
@@ -159,13 +161,19 @@ def feed_parser(rss, key_words):
         logger.warn("解析失败")
         return rss
     else:
-        logger.info("{}".format(feed.updated))
+        if rss_config["rss_url"].startswith("http") is True:
+            feed_updated = feed.feed.updated
+        else:
+            feed_updated = feed.updated
+ 
+        logger.info("{}".format(feed_updated))
+        
 
-        if feed.updated == rss_config["rss_last_updated"]:
+        if feed_updated == rss_config["rss_last_updated"]:
             logger.info("{} No New Feed".format(rss_config['rss_name']))
             return rss
         else:
-            rss_config["rss_last_updated"] = feed.updated
+            rss_config["rss_last_updated"] = feed_updated
 
             update_title_flag = False
             old_title = rss_config["rss_last_updated_title"]

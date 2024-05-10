@@ -15,6 +15,8 @@ nohup celery -A app.celery worker --loglevel INFO -P gevent &
 
 ## Supported News
 
+### RSSHub
+
 - [x] 36kr
 - [x] InfoQ
 - [ ] 差评 not updating
@@ -27,11 +29,12 @@ nohup celery -A app.celery worker --loglevel INFO -P gevent &
 - [x] 少数派
 - [x] Latepost
 - [ ] X
-  - [ ] Elon Musk
+
+### 公众号
 
 - [ ] ~~AI产品榜/Kaixinhanguoyu~~
 - [ ] Founder Park/Founder-Park
-- [x] 量子位/QbitAI
+- [ ] 量子位/QbitAI
 - [ ] 世界人工智能大会/gh_00d68db4a358
 - [x] 甲子光年/jazzyear
 - [ ] DeepTech深科技/deeptechchina
