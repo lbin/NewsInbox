@@ -1,5 +1,7 @@
+import datetime
 import html
 import json
+import os
 import time
 from urllib.parse import urlparse
 
@@ -10,8 +12,6 @@ import app
 
 from .config import conf, load_config
 from .logger import logger
-import datetime
-import os
 
 
 def load_key_words():
