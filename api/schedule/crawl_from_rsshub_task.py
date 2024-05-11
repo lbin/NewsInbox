@@ -5,10 +5,9 @@ import os
 import time
 from urllib.parse import urlparse
 
+import app
 import feedparser
 import requests
-from email.utils import mktime_tz, parsedate_tz
-import app
 
 from .config import conf, load_config
 from .logger import logger

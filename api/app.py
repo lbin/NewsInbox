@@ -18,8 +18,6 @@ import random
 import sys
 from logging.handlers import RotatingFileHandler
 
-from flask import Response
-
 from config import Config
 
 # from events import event_handlers
@@ -32,6 +30,7 @@ from extensions import (
     ext_storage,
 )
 from extensions.ext_database import db
+from flask import Response
 
 # from extensions.ext_login import login_manager
 
