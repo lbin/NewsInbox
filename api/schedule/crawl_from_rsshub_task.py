@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 
 import feedparser
 import requests
-
+from email.utils import mktime_tz, parsedate_tz
 import app
 
 from .config import conf, load_config
@@ -26,7 +26,7 @@ def load_key_words():
     return key_words, black_words
 
 
-def send_to_feishu(content, key_words, black_words, url, sender, title=None):
+def send_to_feishu(content, key_words, black_words, url, sender, title=None, published=None):
     feishu_get_token_url = "https://open.feishu.cn/open-apis/auth/v3/app_access_token/internal"
     feishu_add_record_url = (
         "https://open.feishu.cn/open-apis/bitable/v1/apps/DM8Ib7DNeah45XsA8kOcxvYenHd/tables/tblELLHLYuKXsVf9/records"
@@ -37,7 +37,7 @@ def send_to_feishu(content, key_words, black_words, url, sender, title=None):
 
         json_data = content[data_index + 3 : -3]
         json_data = json_data.replace("\n", "")
-        json_data = json_data.replace(" ", "")
+        # json_data = json_data.replace(" ", "")
         json_data = json_data[1:]
         
 
@@ -69,6 +69,9 @@ def send_to_feishu(content, key_words, black_words, url, sender, title=None):
             new_tags.append(tag)
         tags = new_tags
         logger.info("tags: {}".format(tags))
+        # Wed, 08 May 2024 16:00:00 GMT
+        published_timestamp = int(datetime.datetime.strptime(published, "%a, %d %b %Y %H:%M:%S %Z").timestamp())*1000
+        # published_timestamp = int(datetime.datetime.fromtimestamp(mktime_tz(parsedate_tz(published))).timestamp())
         
         new_json_data = {
             "分类": "Technology",
@@ -79,6 +82,7 @@ def send_to_feishu(content, key_words, black_words, url, sender, title=None):
             "关键要点": key_points_str,
             "项目来源": sender,
             "添加人": "Bot",
+            "发布时间": published_timestamp
         }
         
         # Generate file name based on current time and sender
@@ -189,7 +193,9 @@ def feed_parser(rss, key_words, black_words):
             old_title = rss_config["rss_last_updated_title"]
 
             for entry in feed.entries:
-                entry.title = entry.title.replace(" ", "")
+                # for key in entry:
+                #     logger.info("entry key: {}".format(key))
+                # entry.title = entry.title.replace(" ", "")
                 logger.info("标题: {}".format(entry.title))
                 logger.info("链接: {}".format(entry.link))
                 if entry.title == old_title:
@@ -204,7 +210,8 @@ def feed_parser(rss, key_words, black_words):
                         with open(rss_json_file, "w") as json_file:
                             json.dump(rss_config, json_file, ensure_ascii=False, indent=4)
                     content = sum4all(entry.link)
-                    send_to_feishu(content, key_words, black_words, entry.link, rss_config['rss_name'], entry.title)
+                    published = entry.published if hasattr(entry, "published") else feed_updated
+                    send_to_feishu(content, key_words, black_words, entry.link, rss_config['rss_name'], entry.title, published)
                     time.sleep(config.get("rss_interval"))
 
             return None
