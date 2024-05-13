@@ -171,3 +171,5 @@ nohup.out
 celerybeat-schedule
 /api/schedule/rss_configs/
 /api/schedule/data
+/api/schedule/black_list.txt
+/api/schedule/key_words.txt

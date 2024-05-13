@@ -192,9 +192,6 @@ def feed_parser(rss, key_words, black_words):
             old_title = rss_config["rss_last_updated_title"]
 
             for entry in feed.entries:
-                # for key in entry:
-                #     logger.info("entry key: {}".format(key))
-                # entry.title = entry.title.replace(" ", "")
                 logger.info("标题: {}".format(entry.title))
                 logger.info("链接: {}".format(entry.link))
                 if entry.title == old_title:
