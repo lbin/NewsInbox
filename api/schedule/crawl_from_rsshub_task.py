@@ -36,20 +36,26 @@ def save_to_json(json_data, sender):
     with open(file_name, "w") as json_file:
         json.dump(json_data, json_file, ensure_ascii=False, indent=4)
 
+def parse_to_json():
+    pass
+
 
 def send_to_feishu(content, key_words, black_words, url, sender, title=None, published=None):
     feishu_get_token_url = "https://open.feishu.cn/open-apis/auth/v3/app_access_token/internal"
     feishu_add_record_url = (
         "https://open.feishu.cn/open-apis/bitable/v1/apps/DM8Ib7DNeah45XsA8kOcxvYenHd/tables/tblELLHLYuKXsVf9/records"
     )
-    # try:
     logger.info("content: {}".format(content))
+    if content is None:
+        return None
     if content[0] != '{':
         data_index = content.find("json")
         json_data = content[data_index + 3 : -3]
         json_data = json_data.replace("\n", "")
         # json_data = json_data.replace(" ", "")
         json_data = json_data[1:]
+    else:
+        json_data = content
         
     try:
         json_data = json.loads(json_data)
