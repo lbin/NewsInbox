@@ -1,9 +1,9 @@
 import threading
 import time
+
 import requests
-import time
-from wechatpy.enterprise import WeChatClient
 from config import conf
+from wechatpy.enterprise import WeChatClient
 
 
 class WeChatTokenManager:
@@ -49,7 +49,7 @@ class WeChatTokenManager:
 
 class WechatComServiceClient(WeChatClient):
     def __init__(self, corp_id, secret, access_token=None, session=None, timeout=None, auto_retry=True):
-        super(WechatComServiceClient, self).__init__(corp_id, secret, access_token, session, timeout, auto_retry)
+        super().__init__(corp_id, secret, access_token, session, timeout, auto_retry)
         self.token_manager = WeChatTokenManager()
         self.fetch_access_token_lock = threading.Lock()
 

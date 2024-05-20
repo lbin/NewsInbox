@@ -1,11 +1,7 @@
-# encoding:utf-8
 
 import time
-from typing import List, Tuple
 
 import requests
-from requests import Response
-
 from bot.bot import Bot
 from bot.chatgpt.chat_gpt_session import ChatGPTSession
 from bot.session_manager import SessionManager
@@ -13,6 +9,8 @@ from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
 from config import conf
+from requests import Response
+
 
 class ByteDanceCozeBot(Bot):
     def __init__(self):
@@ -52,7 +50,7 @@ class ByteDanceCozeBot(Bot):
             'Authorization': f"Bearer {conf().get('coze_api_key', '')}"
         }
 
-    def _get_payload(self, user: str, query: str, chat_history: List[dict]):
+    def _get_payload(self, user: str, query: str, chat_history: list[dict]):
         return {
             'bot_id': conf().get('coze_bot_id'),
             "user": user,
@@ -89,7 +87,7 @@ class ByteDanceCozeBot(Bot):
             else:
                 return None, f"[COZE] Exception: {repr(e)} 超过最大重试次数"
 
-    def _convert_messages_format(self, messages) -> Tuple[str, List[dict]]:
+    def _convert_messages_format(self, messages) -> tuple[str, list[dict]]:
         # [
         #     {"role":"user","content":"你好"，"content_type":"text"},
         #     {"role":"assistant","type":"answer","content":"你好，请问有什么可以帮助你的吗？"，"content_type":"text"}

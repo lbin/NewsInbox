@@ -3,23 +3,24 @@ import os
 import random
 import tempfile
 import threading
+
 os.environ['ntwork_LOG'] = "ERROR"
-import ntwork
-import requests
 import uuid
 
+import ntwork
+import requests
 from bridge.context import *
 from bridge.reply import *
 from channel.chat_channel import ChatChannel
+from channel.wework import run
+from channel.wework.run import wework
 from channel.wework.wework_message import *
 from channel.wework.wework_message import WeworkMessage
-from common.singleton import singleton
 from common.log import logger
+from common.singleton import singleton
 from common.time_check import time_checker
 from common.utils import compress_imgfile, fsize
 from config import conf
-from channel.wework.run import wework
-from channel.wework import run
 from PIL import Image
 
 

@@ -2,7 +2,7 @@ from common.expired_dict import ExpiredDict
 from config import conf
 
 
-class DifySession(object):
+class DifySession:
     def __init__(self, session_id: str, user: str, conversation_id: str=''):
         self.__session_id = session_id
         self.__user = user
@@ -29,7 +29,7 @@ class DifySession(object):
         
         self.__user_message_counter += 1
 
-class DifySessionManager(object):
+class DifySessionManager:
     def __init__(self, sessioncls, **session_kwargs):
         if conf().get("expires_in_seconds"):
             sessions = ExpiredDict(conf().get("expires_in_seconds"))

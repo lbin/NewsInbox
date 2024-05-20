@@ -1,9 +1,5 @@
-import time
 
 import web
-from wechatpy import parse_message
-from wechatpy.replies import create_reply
-
 from bridge.context import *
 from bridge.reply import *
 from channel.wechatmp.common import *
@@ -11,6 +7,8 @@ from channel.wechatmp.wechatmp_channel import WechatMPChannel
 from channel.wechatmp.wechatmp_message import WeChatMPMessage
 from common.log import logger
 from config import conf, subscribe_msg
+from wechatpy import parse_message
+from wechatpy.replies import create_reply
 
 
 # This class is instantiated once per query

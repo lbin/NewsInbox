@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
 
 import random
 from hashlib import md5
 
 import requests
-
 from config import conf
 from translate.translator import Translator
 

@@ -6,7 +6,6 @@ import os
 import time
 
 from aip import AipSpeech
-
 from bridge.reply import Reply, ReplyType
 from common.log import logger
 from common.tmp_dir import TmpDir
@@ -40,7 +39,7 @@ class BaiduVoice(Voice):
                 with open(config_path, "w") as fw:
                     json.dump(bconf, fw, indent=4)
             else:
-                with open(config_path, "r") as fr:
+                with open(config_path) as fr:
                     bconf = json.load(fr)
 
             self.app_id = str(conf().get("baidu_app_id"))
@@ -56,7 +55,7 @@ class BaiduVoice(Voice):
 
             self.client = AipSpeech(self.app_id, self.api_key, self.secret_key)
         except Exception as e:
-            logger.warn("BaiduVoice init failed: %s, ignore " % e)
+            logger.warn("BaiduVoice init failed: {}, ignore ".format(e))
 
     def voiceToText(self, voice_file):
         # 识别本地文件
@@ -71,7 +70,7 @@ class BaiduVoice(Voice):
             logger.info("百度语音识别出错了: {}".format(res["err_msg"]))
             if res["err_msg"] == "request pv too much":
                 logger.info("  出现这个原因很可能是你的百度语音服务调用量超出限制，或未开通付费")
-            reply = Reply(ReplyType.ERROR, "百度语音识别出错了；{0}".format(res["err_msg"]))
+            reply = Reply(ReplyType.ERROR, "百度语音识别出错了；{}".format(res["err_msg"]))
         return reply
 
     def textToVoice(self, text):

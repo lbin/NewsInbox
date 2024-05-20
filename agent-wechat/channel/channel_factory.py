@@ -2,6 +2,7 @@
 channel factory
 """
 from common import const
+
 from .channel import Channel
 
 

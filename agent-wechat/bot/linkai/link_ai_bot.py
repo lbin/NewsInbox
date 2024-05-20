@@ -1,21 +1,23 @@
 # access LinkAI knowledge base platform
 # docs: https://link-ai.tech/platform/link-app/wechat
 
+import base64
+import os
 import re
+import threading
 import time
-import requests
+
 import config
+import requests
 from bot.bot import Bot
 from bot.chatgpt.chat_gpt_session import ChatGPTSession
 from bot.session_manager import SessionManager
 from bridge.context import Context, ContextType
 from bridge.reply import Reply, ReplyType
+from common import memory, utils
 from common.log import logger
 from config import conf, pconf
-import threading
-from common import memory, utils
-import base64
-import os
+
 
 class LinkAIBot(Bot):
     # authentication failed

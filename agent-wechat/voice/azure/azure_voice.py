@@ -6,12 +6,11 @@ import os
 import time
 
 import azure.cognitiveservices.speech as speechsdk
-from langid import classify
-
 from bridge.reply import Reply, ReplyType
 from common.log import logger
 from common.tmp_dir import TmpDir
 from config import conf
+from langid import classify
 from voice.voice import Voice
 
 """
@@ -45,7 +44,7 @@ class AzureVoice(Voice):
                 with open(config_path, "w") as fw:
                     json.dump(config, fw, indent=4)
             else:
-                with open(config_path, "r") as fr:
+                with open(config_path) as fr:
                     config = json.load(fr)
             self.config = config
             self.api_key = conf().get("azure_voice_api_key")
@@ -54,7 +53,7 @@ class AzureVoice(Voice):
             self.speech_config.speech_synthesis_voice_name = self.config["speech_synthesis_voice_name"]
             self.speech_config.speech_recognition_language = self.config["speech_recognition_language"]
         except Exception as e:
-            logger.warn("AzureVoice init failed: %s, ignore " % e)
+            logger.warn("AzureVoice init failed: {}, ignore ".format(e))
 
     def voiceToText(self, voice_file):
         audio_config = speechsdk.AudioConfig(filename=voice_file)

@@ -1,31 +1,28 @@
-# encoding:utf-8
 
-import requests, json
-from bot.bot import Bot
-from bot.session_manager import SessionManager
-from bot.baidu.baidu_wenxin_session import BaiduWenxinSession
-from bridge.context import ContextType, Context
-from bridge.reply import Reply, ReplyType
-from common.log import logger
-from config import conf
-from common import const
-import time
 import _thread as thread
-import datetime
-from datetime import datetime
-from wsgiref.handlers import format_date_time
-from urllib.parse import urlencode
 import base64
-import ssl
 import hashlib
 import hmac
 import json
-from time import mktime
-from urllib.parse import urlparse
-import websocket
 import queue
-import threading
 import random
+import ssl
+import threading
+import time
+from datetime import datetime
+from time import mktime
+from urllib.parse import urlencode, urlparse
+from wsgiref.handlers import format_date_time
+
+import websocket
+from bot.baidu.baidu_wenxin_session import BaiduWenxinSession
+from bot.bot import Bot
+from bot.session_manager import SessionManager
+from bridge.context import Context, ContextType
+from bridge.reply import Reply, ReplyType
+from common import const
+from common.log import logger
+from config import conf
 
 # 消息队列 map
 queue_map = dict()

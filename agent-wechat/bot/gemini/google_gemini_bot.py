@@ -6,14 +6,14 @@ Google gemini bot
 """
 # encoding:utf-8
 
-from bot.bot import Bot
 import google.generativeai as genai
+from bot.baidu.baidu_wenxin_session import BaiduWenxinSession
+from bot.bot import Bot
 from bot.session_manager import SessionManager
-from bridge.context import ContextType, Context
+from bridge.context import Context, ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
 from config import conf
-from bot.baidu.baidu_wenxin_session import BaiduWenxinSession
 
 
 # OpenAI对话模型API (可用)

@@ -1,4 +1,3 @@
-# encoding:utf-8
 
 """
 wechaty channel
@@ -9,10 +8,6 @@ import base64
 import os
 import time
 
-from wechaty import Contact, Wechaty
-from wechaty.user import Message
-from wechaty_puppet import FileBox
-
 from bridge.context import *
 from bridge.context import Context
 from bridge.reply import *
@@ -21,6 +16,9 @@ from channel.wechat.wechaty_message import WechatyMessage
 from common.log import logger
 from common.singleton import singleton
 from config import conf
+from wechaty import Contact, Wechaty
+from wechaty.user import Message
+from wechaty_puppet import FileBox
 
 try:
     from voice.audio_convert import any_to_sil

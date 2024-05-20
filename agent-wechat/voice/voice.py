@@ -3,7 +3,7 @@ Voice service abstract class
 """
 
 
-class Voice(object):
+class Voice:
     def voiceToText(self, voice_file):
         """
         Send voice to voice service and get text

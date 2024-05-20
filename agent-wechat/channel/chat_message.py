@@ -33,7 +33,7 @@ _rawmsg: 原始消息对象
 """
 
 
-class ChatMessage(object):
+class ChatMessage:
     msg_id = None
     create_time = None
 

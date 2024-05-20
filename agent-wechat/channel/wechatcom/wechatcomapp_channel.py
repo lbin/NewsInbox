@@ -1,15 +1,9 @@
-# -*- coding=utf-8 -*-
 import io
 import os
 import time
 
 import requests
 import web
-from wechatpy.enterprise import create_reply, parse_message
-from wechatpy.enterprise.crypto import WeChatCrypto
-from wechatpy.enterprise.exceptions import InvalidCorpIdException
-from wechatpy.exceptions import InvalidSignatureException, WeChatClientException
-
 from bridge.context import Context
 from bridge.reply import Reply, ReplyType
 from channel.chat_channel import ChatChannel
@@ -20,6 +14,10 @@ from common.singleton import singleton
 from common.utils import compress_imgfile, fsize, split_string_by_utf8_length
 from config import conf, subscribe_msg
 from voice.audio_convert import any_to_amr, split_audio
+from wechatpy.enterprise import create_reply, parse_message
+from wechatpy.enterprise.crypto import WeChatCrypto
+from wechatpy.enterprise.exceptions import InvalidCorpIdException
+from wechatpy.exceptions import InvalidSignatureException, WeChatClientException
 
 MAX_UTF8_LEN = 2048
 

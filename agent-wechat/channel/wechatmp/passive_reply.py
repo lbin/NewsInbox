@@ -1,10 +1,8 @@
 import asyncio
+import textwrap
 import time
 
 import web
-from wechatpy import parse_message
-from wechatpy.replies import ImageReply, VoiceReply, create_reply
-import textwrap
 from bridge.context import *
 from bridge.reply import *
 from channel.wechatmp.common import *
@@ -13,6 +11,8 @@ from channel.wechatmp.wechatmp_message import WeChatMPMessage
 from common.log import logger
 from common.utils import split_string_by_utf8_length
 from config import conf, subscribe_msg
+from wechatpy import parse_message
+from wechatpy.replies import ImageReply, VoiceReply, create_reply
 
 
 # This class is instantiated once per query
@@ -81,7 +81,7 @@ class Query:
                                     请跟我说话吧。"""
                                 )
                         else:
-                            logger.error(f"[wechatmp] unknown error")
+                            logger.error("[wechatmp] unknown error")
                             reply_text = textwrap.dedent(
                                 """\
                                 未知错误，请稍后再试"""

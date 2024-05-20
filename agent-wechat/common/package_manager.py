@@ -1,9 +1,6 @@
-import time
-
-import pip
-from pip._internal import main as pipmain
 
 from common.log import _reset_logger, logger
+from pip._internal import main as pipmain
 
 
 def install(package):
@@ -16,21 +13,4 @@ def install_requirements(file):
 
 
 def check_dulwich():
-    needwait = False
-    for i in range(2):
-        if needwait:
-            time.sleep(3)
-            needwait = False
-        try:
-            import dulwich
-
-            return
-        except ImportError:
-            try:
-                install("dulwich")
-            except:
-                needwait = True
-    try:
-        import dulwich
-    except ImportError:
-        raise ImportError("Unable to import dulwich")
+    pass

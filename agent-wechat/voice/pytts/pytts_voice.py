@@ -7,7 +7,6 @@ import sys
 import time
 
 import pyttsx3
-
 from bridge.reply import Reply, ReplyType
 from common.log import logger
 from common.tmp_dir import TmpDir

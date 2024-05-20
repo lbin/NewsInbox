@@ -10,7 +10,7 @@ from voice.factory import create_voice
 
 
 @singleton
-class Bridge(object):
+class Bridge:
     def __init__(self):
         self.btype = {
             "chat": const.CHATGPT,

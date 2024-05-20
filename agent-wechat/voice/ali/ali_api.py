@@ -1,4 +1,3 @@
-# coding=utf-8
 """
 Author: chazzjimel
 Email: chazzjimel@gmail.com
@@ -8,16 +7,16 @@ Description:
 
 """
 
-import json
-import time
-import requests
+import base64
 import datetime
 import hashlib
 import hmac
-import base64
+import json
+import time
 import urllib.parse
 import uuid
 
+import requests
 from common.log import logger
 from common.tmp_dir import TmpDir
 

@@ -6,18 +6,18 @@
 """
 
 # -*- coding=utf-8 -*-
-from channel.dingtalk.dingtalk_message import DingTalkMessage
-from bridge.context import Context
+import logging
+
+import dingtalk_stream
+from bridge.context import Context, ContextType
 from bridge.reply import Reply
+from channel.chat_channel import ChatChannel
+from channel.dingtalk.dingtalk_message import DingTalkMessage
+from common.expired_dict import ExpiredDict
 from common.log import logger
 from common.singleton import singleton
 from config import conf
-from common.expired_dict import ExpiredDict
-from bridge.context import ContextType
-from channel.chat_channel import ChatChannel
-import logging
 from dingtalk_stream import AckMessage
-import dingtalk_stream
 
 
 @singleton

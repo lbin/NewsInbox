@@ -7,7 +7,7 @@ from bridge.context import Context
 from bridge.reply import Reply
 
 
-class Bot(object):
+class Bot:
     def reply(self, query, context: Context = None) -> Reply:
         """
         bot auto-reply content

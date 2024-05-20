@@ -1,16 +1,15 @@
 import asyncio
 import re
 
-from wechaty import MessageType
-from wechaty.user import Message
-
 from bridge.context import ContextType
 from channel.chat_message import ChatMessage
 from common.log import logger
 from common.tmp_dir import TmpDir
+from wechaty import MessageType
+from wechaty.user import Message
 
 
-class aobject(object):
+class aobject:
     """Inheriting this class allows you to define an async __init__.
 
     So you can create objects by doing something like `await MyClass(params)`

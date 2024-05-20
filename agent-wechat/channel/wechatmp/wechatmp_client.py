@@ -1,16 +1,15 @@
 import threading
 import time
 
-from wechatpy.client import WeChatClient
-from wechatpy.exceptions import APILimitedException
-
 from channel.wechatmp.common import *
 from common.log import logger
+from wechatpy.client import WeChatClient
+from wechatpy.exceptions import APILimitedException
 
 
 class WechatMPClient(WeChatClient):
     def __init__(self, appid, secret, access_token=None, session=None, timeout=None, auto_retry=True):
-        super(WechatMPClient, self).__init__(appid, secret, access_token, session, timeout, auto_retry)
+        super().__init__(appid, secret, access_token, session, timeout, auto_retry)
         self.fetch_access_token_lock = threading.Lock()
         self.clear_quota_lock = threading.Lock()
         self.last_clear_quota_time = -1

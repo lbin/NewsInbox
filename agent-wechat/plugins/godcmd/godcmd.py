@@ -1,19 +1,17 @@
-# encoding:utf-8
 
 import json
+import logging
 import os
 import random
 import string
-import logging
-from typing import Tuple
 
-import bridge.bridge
-import plugins
 from bridge.bridge import Bridge
 from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from common import const
-from config import conf, load_config, global_config
+from config import conf, global_config, load_config
+
+import plugins
 from plugins import *
 
 # 定义指令集
@@ -155,7 +153,7 @@ def get_help_text(isadmin, isgroup):
     for plugin in plugins:
         if plugins[plugin].enabled and not plugins[plugin].hidden:
             namecn = plugins[plugin].namecn
-            help_text += "\n%s:" % namecn
+            help_text += "\n{}:".format(namecn)
             help_text += PluginManager().instances[plugin].get_help_text(verbose=False).strip()
 
     if ADMIN_COMMANDS and isadmin:
@@ -191,7 +189,7 @@ class Godcmd(Plugin):
                     json.dump(gconf, f, indent=4)
         if gconf["password"] == "":
             self.temp_password = "".join(random.sample(string.digits, 4))
-            logger.info("[Godcmd] 因未设置口令，本次的临时口令为%s。" % self.temp_password)
+            logger.info("[Godcmd] 因未设置口令，本次的临时口令为{}。".format(self.temp_password))
         else:
             self.temp_password = None
         custom_commands = conf().get("clear_memory_commands", [])
@@ -217,12 +215,12 @@ class Godcmd(Plugin):
             return
 
         content = e_context["context"].content
-        logger.debug("[Godcmd] on_handle_context. content: %s" % content)
+        logger.debug("[Godcmd] on_handle_context. content: {}".format(content))
         if content.startswith("#"):
             if len(content) == 1:
                 reply = Reply()
                 reply.type = ReplyType.ERROR
-                reply.content = f"空指令，输入#help查看指令列表\n"
+                reply.content = "空指令，输入#help查看指令列表\n"
                 e_context["reply"] = reply
                 e_context.action = EventAction.BREAK_PASS
                 return
@@ -321,7 +319,7 @@ class Godcmd(Plugin):
                         ok, result = True, "会话已重置"
                     else:
                         ok, result = False, "当前对话机器人不支持重置会话"
-                logger.debug("[Godcmd] command: %s by %s" % (cmd, user))
+                logger.debug("[Godcmd] command: {} by {}".format(cmd, user))
             elif any(cmd in info["alias"] for info in ADMIN_COMMANDS.values()):
                 if isadmin:
                     if isgroup:
@@ -418,7 +416,7 @@ class Godcmd(Plugin):
                                 ok, result = False, "请提供插件名"
                             else:
                                 ok, result = PluginManager().update_plugin(args[0])
-                        logger.debug("[Godcmd] admin command: %s by %s" % (cmd, user))
+                        logger.debug("[Godcmd] admin command: {} by {}".format(cmd, user))
                 else:
                     ok, result = False, "需要管理员权限才能执行该指令"
             else:
@@ -439,7 +437,7 @@ class Godcmd(Plugin):
         elif not self.isrunning:
             e_context.action = EventAction.BREAK_PASS
 
-    def authenticate(self, userid, args, isadmin, isgroup) -> Tuple[bool, str]:
+    def authenticate(self, userid, args, isadmin, isgroup) -> tuple[bool, str]:
         if isgroup:
             return False, "请勿在群聊中认证"
 

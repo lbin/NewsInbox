@@ -1,4 +1,3 @@
-# encoding:utf-8
 
 import json
 import logging
@@ -144,8 +143,6 @@ available_setting = {
     "wechatcomapp_aes_key": "",  # 企业微信app的aes_key
     # 飞书配置
     "feishu_port": 80,  # 飞书bot监听端口
-    "feishu_app_id": "",  # 飞书机器人应用APP Id
-    "feishu_app_secret": "",  # 飞书机器人APP secret
     "feishu_token": "",  # 飞书 verification token
     "feishu_bot_name": "",  # 飞书机器人的名字
     # 钉钉配置
@@ -297,7 +294,7 @@ def get_root():
 
 
 def read_file(path):
-    with open(path, mode="r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         return f.read()
 
 

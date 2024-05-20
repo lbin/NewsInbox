@@ -1,11 +1,11 @@
+import time
+
 from bridge.context import Context, ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
+from config import available_setting, conf, pconf, plugin_config
 from linkai import LinkAIClient, PushMsg
-from config import conf, pconf, plugin_config, available_setting
 from plugins import PluginManager
-import time
-
 
 chat_client: LinkAIClient
 

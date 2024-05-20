@@ -3,8 +3,8 @@ import json
 import os
 import re
 import time
-import pilk
 
+import pilk
 from bridge.context import ContextType
 from channel.chat_message import ChatMessage
 from common.log import logger

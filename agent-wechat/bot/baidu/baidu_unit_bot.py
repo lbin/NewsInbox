@@ -1,7 +1,5 @@
-# encoding:utf-8
 
 import requests
-
 from bot.bot import Bot
 from bridge.reply import Reply, ReplyType
 

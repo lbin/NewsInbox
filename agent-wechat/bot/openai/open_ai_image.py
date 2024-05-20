@@ -3,14 +3,13 @@ import time
 import openai
 import openai.error
 from bridge.reply import Reply, ReplyType
-
 from common.log import logger
 from common.token_bucket import TokenBucket
 from config import conf
 
 
 # OPENAI提供的画图接口
-class OpenAIImage(object):
+class OpenAIImage:
     def __init__(self):
         openai.api_base = conf().get("open_ai_api_base")
         openai.api_key = conf().get("open_ai_api_key")

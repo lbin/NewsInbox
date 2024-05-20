@@ -1,10 +1,9 @@
 from common.log import logger
 from config import conf
 
-
 # ZhipuAI提供的画图接口
 
-class ZhipuAIImage(object):
+class ZhipuAIImage:
     def __init__(self):
         from zhipuai import ZhipuAI
         self.client = ZhipuAI(api_key=conf().get("zhipu_ai_api_key"))

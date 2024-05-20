@@ -1,12 +1,13 @@
-# encoding:utf-8
 
 import json
 import os
+
 import requests
-import plugins
 from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
+
+import plugins
 from plugins import *
 
 
@@ -32,7 +33,7 @@ class Keyword(Plugin):
                     json.dump(conf, f, indent=4)
             else:
                 logger.debug(f"[keyword]加载配置文件{config_path}")
-                with open(config_path, "r", encoding="utf-8") as f:
+                with open(config_path, encoding="utf-8") as f:
                     conf = json.load(f)
             # 加载关键词
             self.keyword = conf["keyword"]
@@ -49,7 +50,7 @@ class Keyword(Plugin):
             return
 
         content = e_context["context"].content.strip()
-        logger.debug("[keyword] on_handle_context. content: %s" % content)
+        logger.debug("[keyword] on_handle_context. content: {}".format(content))
         if content in self.keyword:
             logger.info(f"[keyword] 匹配到关键字【{content}】")
             reply_text = self.keyword[content]

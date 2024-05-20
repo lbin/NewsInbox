@@ -1,4 +1,3 @@
-import hashlib
 import re
 import time
 

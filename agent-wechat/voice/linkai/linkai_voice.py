@@ -1,16 +1,18 @@
 """
 google voice service
 """
+import datetime
+import os
 import random
+
 import requests
-from voice import audio_convert
 from bridge.reply import Reply, ReplyType
+from common import const
 from common.log import logger
 from config import conf
+from voice import audio_convert
 from voice.voice import Voice
-from common import const
-import os
-import datetime
+
 
 class LinkAIVoice(Voice):
     def __init__(self):

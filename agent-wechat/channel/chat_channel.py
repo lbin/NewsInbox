@@ -8,8 +8,8 @@ from concurrent.futures import Future, ThreadPoolExecutor
 from bridge.context import *
 from bridge.reply import *
 from channel.channel import Channel
-from common.dequeue import Dequeue
 from common import memory
+from common.dequeue import Dequeue
 from plugins import *
 
 try:

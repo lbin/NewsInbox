@@ -1,15 +1,14 @@
-# encoding:utf-8
 
 import os
 import signal
 import sys
+import threading
 import time
 
 from channel import channel_factory
 from common import const
 from config import load_config
 from plugins import *
-import threading
 
 
 def sigterm_handler_wrap(_signo):

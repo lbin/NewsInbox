@@ -1,13 +1,12 @@
-# encoding:utf-8
 
 import time
 
 import openai
 import openai.error
 from bot.bot import Bot
-from bot.zhipuai.zhipu_ai_session import ZhipuAISession
-from bot.zhipuai.zhipu_ai_image import ZhipuAIImage
 from bot.session_manager import SessionManager
+from bot.zhipuai.zhipu_ai_image import ZhipuAIImage
+from bot.zhipuai.zhipu_ai_session import ZhipuAISession
 from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger

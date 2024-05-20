@@ -3,7 +3,7 @@ from common.log import logger
 from config import conf
 
 
-class Session(object):
+class Session:
     def __init__(self, session_id, system_prompt=None):
         self.session_id = session_id
         self.messages = []
@@ -36,7 +36,7 @@ class Session(object):
         raise NotImplementedError
 
 
-class SessionManager(object):
+class SessionManager:
     def __init__(self, sessioncls, **session_args):
         if conf().get("expires_in_seconds"):
             sessions = ExpiredDict(conf().get("expires_in_seconds"))

@@ -1,17 +1,13 @@
-# -*- coding: utf-8 -*-
 import asyncio
 import imghdr
 import io
 import os
 import threading
 import time
+from collections import defaultdict
 
 import requests
 import web
-from wechatpy.crypto import WeChatCrypto
-from wechatpy.exceptions import WeChatClientException
-from collections import defaultdict
-
 from bridge.context import *
 from bridge.reply import *
 from channel.chat_channel import ChatChannel
@@ -22,6 +18,8 @@ from common.singleton import singleton
 from common.utils import split_string_by_utf8_length
 from config import conf
 from voice.audio_convert import any_to_mp3, split_audio
+from wechatpy.crypto import WeChatCrypto
+from wechatpy.exceptions import WeChatClientException
 
 # If using SSL, uncomment the following lines, and modify the certificate path.
 # from cheroot.server import HTTPServer

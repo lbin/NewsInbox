@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding:utf-8 -*-
 # ToolGood.Words.WordsSearch.py
 # 2020, Lin Zhijun, https://github.com/toolgood/ToolGood.Words
 # Licensed under the Apache License 2.0
@@ -11,7 +10,7 @@ __all__ = ['WordsSearch']
 __author__ = 'Lin Zhijun'
 __date__ = '2020.05.16'
 
-class TrieNode():
+class TrieNode:
     def __init__(self):
         self.Index = 0
         self.Index = 0
@@ -37,7 +36,7 @@ class TrieNode():
             self.End = True
         self.Results.append(index)
 
-class TrieNode2():
+class TrieNode2:
     def __init__(self):
         self.End = False
         self.Results = []
@@ -69,7 +68,7 @@ class TrieNode2():
         return None
 
 
-class WordsSearch():
+class WordsSearch:
     def __init__(self):
         self._first = {}
         self._keywords = []

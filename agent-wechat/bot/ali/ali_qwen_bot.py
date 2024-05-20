@@ -1,24 +1,22 @@
-# encoding:utf-8
 
 import json
 import time
-from typing import List, Tuple
 
+import broadscope_bailian
 import openai
 import openai.error
-import broadscope_bailian
-from broadscope_bailian import ChatQaMessage
-
-from bot.bot import Bot
 from bot.ali.ali_qwen_session import AliQwenSession
+from bot.bot import Bot
 from bot.openai.open_ai_image import OpenAIImage
 from bot.openai.open_ai_vision import OpenAIVision
 from bot.session_manager import SessionManager
 from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
-from common.log import logger
+from broadscope_bailian import ChatQaMessage
 from common import const
+from common.log import logger
 from config import conf, load_config
+
 
 class AliQwenBot(Bot, OpenAIImage, OpenAIVision):
     def __init__(self):
@@ -166,7 +164,7 @@ class AliQwenBot(Bot, OpenAIImage, OpenAIVision):
         if time.time() > self.api_key_expired_time:
             self.api_key_expired_time = self.set_api_key()
 
-    def convert_messages_format(self, messages) -> Tuple[str, List[ChatQaMessage]]:
+    def convert_messages_format(self, messages) -> tuple[str, list[ChatQaMessage]]:
         history = []
         user_content = ''
         assistant_content = ''

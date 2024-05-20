@@ -1,10 +1,11 @@
+import json
+
+import requests
 from bridge.context import ContextType
 from channel.chat_message import ChatMessage
-import json
-import requests
+from common import utils
 from common.log import logger
 from common.tmp_dir import TmpDir
-from common import utils
 
 
 class FeishuMessage(ChatMessage):

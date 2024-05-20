@@ -1,16 +1,15 @@
-# encoding:utf-8
 import json
 import threading
 
 import requests
-
 from bot.bot import Bot
 from bot.dify.dify_session import DifySession, DifySessionManager
-from bridge.context import ContextType, Context
+from bridge.context import Context, ContextType
 from bridge.reply import Reply, ReplyType
-from common.log import logger
 from common import const
+from common.log import logger
 from config import conf
+
 
 class DifyBot(Bot):
     def __init__(self):

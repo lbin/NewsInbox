@@ -6,22 +6,21 @@
 """
 
 # -*- coding=utf-8 -*-
+import json
+import os
 import uuid
 
 import requests
 import web
-from channel.feishu.feishu_message import FeishuMessage
-from bridge.context import Context
+from bridge.context import Context, ContextType
 from bridge.reply import Reply, ReplyType
+from channel.chat_channel import ChatChannel, check_prefix
+from channel.feishu.feishu_message import FeishuMessage
+from common import utils
+from common.expired_dict import ExpiredDict
 from common.log import logger
 from common.singleton import singleton
 from config import conf
-from common.expired_dict import ExpiredDict
-from bridge.context import ContextType
-from channel.chat_channel import ChatChannel, check_prefix
-from common import utils
-import json
-import os
 
 URL_VERIFICATION = "url_verification"
 
@@ -92,7 +91,7 @@ class FeiShuChanel(ChatChannel):
             res = requests.post(url=url, headers=headers, params=params, json=data, timeout=(5, 10))
         res = res.json()
         if res.get("code") == 0:
-            logger.info(f"[FeiShu] send message success")
+            logger.info("[FeiShu] send message success")
         else:
             logger.error(f"[FeiShu] send message failed, code={res.get('code')}, msg={res.get('msg')}")
 

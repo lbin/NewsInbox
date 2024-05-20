@@ -1,15 +1,13 @@
-# encoding:utf-8
 import json
-import os
 import uuid
 from uuid import getnode as get_mac
 
 import requests
-
-import plugins
 from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
+
+import plugins
 from plugins import *
 
 """利用百度UNIT实现智能对话
@@ -47,7 +45,7 @@ class BDunit(Plugin):
             return
 
         content = e_context["context"].content
-        logger.debug("[BDunit] on_handle_context. content: %s" % content)
+        logger.debug("[BDunit] on_handle_context. content: {}".format(content))
         parsed = self.getUnit2(content)
         intent = self.getIntent(parsed)
         if intent:  # 找到意图

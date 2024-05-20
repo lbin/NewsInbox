@@ -1,12 +1,12 @@
-# encoding:utf-8
 
-import plugins
 from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from channel.chat_message import ChatMessage
 from common.log import logger
-from plugins import *
 from config import conf
+
+import plugins
+from plugins import *
 
 
 @plugins.register(
@@ -87,7 +87,7 @@ class Hello(Plugin):
             return
 
         content = e_context["context"].content
-        logger.debug("[Hello] on_handle_context. content: %s" % content)
+        logger.debug("[Hello] on_handle_context. content: {}".format(content))
         if content == "Hello":
             reply = Reply()
             reply.type = ReplyType.TEXT
@@ -120,7 +120,7 @@ class Hello(Plugin):
         try:
             plugin_config_path = os.path.join(self.path, "config.json.template")
             if os.path.exists(plugin_config_path):
-                with open(plugin_config_path, "r", encoding="utf-8") as f:
+                with open(plugin_config_path, encoding="utf-8") as f:
                     plugin_conf = json.load(f)
                     return plugin_conf
         except Exception as e:

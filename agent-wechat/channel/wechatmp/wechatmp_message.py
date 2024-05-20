@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-#
 
 from bridge.context import ContextType
 from channel.chat_message import ChatMessage

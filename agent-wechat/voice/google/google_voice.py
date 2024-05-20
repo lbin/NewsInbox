@@ -5,11 +5,10 @@ google voice service
 import time
 
 import speech_recognition
-from gtts import gTTS
-
 from bridge.reply import Reply, ReplyType
 from common.log import logger
 from common.tmp_dir import TmpDir
+from gtts import gTTS
 from voice.voice import Voice
 
 
@@ -29,7 +28,7 @@ class GoogleVoice(Voice):
         except speech_recognition.UnknownValueError:
             reply = Reply(ReplyType.ERROR, "抱歉，我听不懂")
         except speech_recognition.RequestError as e:
-            reply = Reply(ReplyType.ERROR, "抱歉，无法连接到 Google 语音识别服务；{0}".format(e))
+            reply = Reply(ReplyType.ERROR, "抱歉，无法连接到 Google 语音识别服务；{}".format(e))
         finally:
             return reply
 

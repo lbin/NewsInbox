@@ -1,13 +1,13 @@
 import base64
 
 import requests
-
+from common import const, memory, utils
 from common.log import logger
-from common import const, utils, memory
 from config import conf
 
+
 # OPENAI提供的图像识别接口
-class OpenAIVision(object):
+class OpenAIVision:
     def do_vision_completion_if_need(self, session_id: str, query: str):
         img_cache = memory.USER_IMAGE_CACHE.get(session_id)
         if img_cache and conf().get("image_recognition"):

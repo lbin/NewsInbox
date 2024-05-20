@@ -1,11 +1,8 @@
+
 from bridge.context import ContextType
 from channel.chat_message import ChatMessage
-import json
-import requests
-from common.log import logger
-from common.tmp_dir import TmpDir
-from common import utils
 from dingtalk_stream import ChatbotMessage
+
 
 class DingTalkMessage(ChatMessage):
     def __init__(self, event: ChatbotMessage):

@@ -1,17 +1,16 @@
-# encoding:utf-8
 
+import os
+from http import HTTPStatus
+
+import dashscope
 from bot.bot import Bot
 from bot.session_manager import SessionManager
 from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
 from config import conf, load_config
+
 from .dashscope_session import DashscopeSession
-import os
-import dashscope
-from http import HTTPStatus
-
-
 
 dashscope_models = {
     "qwen-turbo": dashscope.Generation.Models.qwen_turbo,
@@ -96,7 +95,7 @@ class DashscopeBot(Bot):
                     "content": content,
                 }
             else:
-                logger.error('Request id: %s, Status code: %s, error code: %s, error message: %s' % (
+                logger.error('Request id: {}, Status code: {}, error code: {}, error message: {}'.format(
                     response.request_id, response.status_code,
                     response.code, response.message
                 ))

@@ -1,16 +1,16 @@
-# encoding:utf-8
+import html
 import json
 import os
-import html
 from urllib.parse import urlparse
 
 import requests
-
-import plugins
 from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
+
+import plugins
 from plugins import *
+
 
 @plugins.register(
     name="JinaSum",
@@ -68,7 +68,7 @@ class JinaSum(Plugin):
                 logger.debug(f"[JinaSum] {content} is not a valid url, skip")
                 return
             if retry_count == 0:
-                logger.debug("[JinaSum] on_handle_context. content: %s" % content)
+                logger.debug("[JinaSum] on_handle_context. content: {}".format(content))
                 reply = Reply(ReplyType.TEXT, "🎉正在为您生成总结，请稍候...")
                 channel = e_context["channel"]
                 channel.send(reply, context)
@@ -106,14 +106,14 @@ class JinaSum(Plugin):
             e_context.action = EventAction.BREAK_PASS
 
     def get_help_text(self, verbose, **kwargs):
-        return f'使用jina reader和ChatGPT总结网页链接内容'
+        return '使用jina reader和ChatGPT总结网页链接内容'
 
     def _load_config_template(self):
         logger.debug("No Suno plugin config.json, use plugins/jina_sum/config.json.template")
         try:
             plugin_config_path = os.path.join(self.path, "config.json.template")
             if os.path.exists(plugin_config_path):
-                with open(plugin_config_path, "r", encoding="utf-8") as f:
+                with open(plugin_config_path, encoding="utf-8") as f:
                     plugin_conf = json.load(f)
                     return plugin_conf
         except Exception as e:

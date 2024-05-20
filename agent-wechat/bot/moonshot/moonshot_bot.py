@@ -1,17 +1,15 @@
-# encoding:utf-8
 
 import time
 
-import openai
-import openai.error
+import requests
 from bot.bot import Bot
 from bot.session_manager import SessionManager
 from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
 from config import conf, load_config
+
 from .moonshot_session import MoonshotSession
-import requests
 
 
 # ZhipuAI对话模型API

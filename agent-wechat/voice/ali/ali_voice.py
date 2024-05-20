@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Author: chazzjimel
 Email: chazzjimel@gmail.com
@@ -15,10 +14,9 @@ import time
 
 from bridge.reply import Reply, ReplyType
 from common.log import logger
-from voice.voice import Voice
-from voice.ali.ali_api import AliyunTokenGenerator
-from voice.ali.ali_api import text_to_speech_aliyun
 from config import conf
+from voice.ali.ali_api import AliyunTokenGenerator, text_to_speech_aliyun
+from voice.voice import Voice
 
 
 class AliVoice(Voice):
@@ -29,7 +27,7 @@ class AliVoice(Voice):
         try:
             curdir = os.path.dirname(__file__)
             config_path = os.path.join(curdir, "config.json")
-            with open(config_path, "r") as fr:
+            with open(config_path) as fr:
                 config = json.load(fr)
             self.token = None
             self.token_expire_time = 0
@@ -39,7 +37,7 @@ class AliVoice(Voice):
             self.access_key_id = conf().get("qwen_access_key_id") or config.get("access_key_id")
             self.access_key_secret = conf().get("qwen_access_key_secret") or config.get("access_key_secret")
         except Exception as e:
-            logger.warn("AliVoice init failed: %s, ignore " % e)
+            logger.warn("AliVoice init failed: {}, ignore ".format(e))
 
     def textToVoice(self, text):
         """

@@ -1,15 +1,13 @@
-# encoding:utf-8
 
 import time
 
+import anthropic
 import openai
 import openai.error
-import anthropic
-
 from bot.bot import Bot
-from bot.openai.open_ai_image import OpenAIImage
 from bot.chatgpt.chat_gpt_session import ChatGPTSession
 from bot.gemini.google_gemini_bot import GoogleGeminiBot
+from bot.openai.open_ai_image import OpenAIImage
 from bot.session_manager import SessionManager
 from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType

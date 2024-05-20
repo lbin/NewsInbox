@@ -1,16 +1,11 @@
-# -*- coding=utf-8 -*-
 import io
 import json
 import os
 import time
+import xml.etree.ElementTree as ET
 
 import requests
 import web
-from wechatpy.enterprise import create_reply, parse_message
-from wechatpy.enterprise.crypto import WeChatCrypto
-from wechatpy.enterprise.exceptions import InvalidCorpIdException
-from wechatpy.exceptions import InvalidSignatureException, WeChatClientException
-
 from bridge.context import Context
 from bridge.reply import Reply, ReplyType
 from channel.chat_channel import ChatChannel
@@ -19,16 +14,11 @@ from channel.wechatcs.wechatcomservice_message import WechatComServiceMessage
 from common.log import logger
 from common.singleton import singleton
 from common.utils import compress_imgfile, fsize, split_string_by_utf8_length
-from config import conf, subscribe_msg
+from config import conf
 from voice.audio_convert import any_to_amr, split_audio
-
-import web
-import json
-import requests
-import xml.etree.ElementTree as ET
 from wechatpy.enterprise.crypto import WeChatCrypto
-from wechatpy.exceptions import InvalidSignatureException
 from wechatpy.enterprise.exceptions import InvalidCorpIdException
+from wechatpy.exceptions import InvalidSignatureException, WeChatClientException
 
 MAX_UTF8_LEN = 2048
 
@@ -204,7 +194,7 @@ class WechatComServiceChannel(ChatChannel):
 
         response = requests.post(url, json=data).json()
         if response['errmsg'] == 'ok':
-            print(f"Send IMAGE Message Success")
+            print("Send IMAGE Message Success")
         else:
             print(f"Something error:{response}")
         return response
@@ -222,7 +212,7 @@ class WechatComServiceChannel(ChatChannel):
 
         response = requests.post(url, json=data).json()
         if response['errmsg'] == 'ok':
-            print(f"Send VOICE Message Success")
+            print("Send VOICE Message Success")
         else:
             print(f"Something error:{response}")
         return response

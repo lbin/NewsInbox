@@ -1,4 +1,3 @@
-# encoding:utf-8
 
 """
 wechat channel
@@ -11,11 +10,10 @@ import threading
 import time
 
 import requests
-
 from bridge.context import *
 from bridge.reply import *
-from channel.chat_channel import ChatChannel
 from channel import chat_channel
+from channel.chat_channel import ChatChannel
 from channel.wechat.wechat_message import *
 from common.expired_dict import ExpiredDict
 from common.log import logger

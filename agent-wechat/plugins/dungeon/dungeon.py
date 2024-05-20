@@ -1,6 +1,4 @@
-# encoding:utf-8
 
-import plugins
 from bridge.bridge import Bridge
 from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
@@ -8,6 +6,8 @@ from common import const
 from common.expired_dict import ExpiredDict
 from common.log import logger
 from config import conf
+
+import plugins
 from plugins import *
 
 
@@ -70,7 +70,7 @@ class Dungeon(Plugin):
         content = e_context["context"].content[:]
         clist = e_context["context"].content.split(maxsplit=1)
         sessionid = e_context["context"]["session_id"]
-        logger.debug("[Dungeon] on_handle_context. content: %s" % clist)
+        logger.debug("[Dungeon] on_handle_context. content: {}".format(clist))
         trigger_prefix = conf().get("plugin_trigger_prefix", "$")
         if clist[0] == f"{trigger_prefix}停止冒险":
             if sessionid in self.games:

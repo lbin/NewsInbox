@@ -1,10 +1,8 @@
 import os
 import pathlib
 
-from config import conf
 
-
-class TmpDir(object):
+class TmpDir:
     """A temporary directory that is deleted when the object is destroyed."""
 
     tmpFilePath = pathlib.Path("./tmp/")

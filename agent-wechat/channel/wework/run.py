@@ -1,5 +1,6 @@
 import os
 import time
+
 os.environ['ntwork_LOG'] = "ERROR"
 import ntwork
 

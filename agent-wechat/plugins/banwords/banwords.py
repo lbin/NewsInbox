@@ -1,12 +1,12 @@
-# encoding:utf-8
 
 import json
 import os
 
-import plugins
 from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
+
+import plugins
 from plugins import *
 
 from .lib.WordsSearch import WordsSearch
@@ -38,7 +38,7 @@ class Banwords(Plugin):
             self.searchr = WordsSearch()
             self.action = conf["action"]
             banwords_path = os.path.join(curdir, "banwords.txt")
-            with open(banwords_path, "r", encoding="utf-8") as f:
+            with open(banwords_path, encoding="utf-8") as f:
                 words = []
                 for line in f:
                     word = line.strip()
@@ -62,11 +62,11 @@ class Banwords(Plugin):
             return
 
         content = e_context["context"].content
-        logger.debug("[Banwords] on_handle_context. content: %s" % content)
+        logger.debug("[Banwords] on_handle_context. content: {}".format(content))
         if self.action == "ignore":
             f = self.searchr.FindFirst(content)
             if f:
-                logger.info("[Banwords] %s in message" % f["Keyword"])
+                logger.info("[Banwords] {} in message".format(f["Keyword"]))
                 e_context.action = EventAction.BREAK_PASS
                 return
         elif self.action == "replace":
@@ -85,7 +85,7 @@ class Banwords(Plugin):
         if self.reply_action == "ignore":
             f = self.searchr.FindFirst(content)
             if f:
-                logger.info("[Banwords] %s in reply" % f["Keyword"])
+                logger.info("[Banwords] {} in reply".format(f["Keyword"]))
                 e_context["reply"] = None
                 e_context.action = EventAction.BREAK_PASS
                 return

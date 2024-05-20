@@ -1,8 +1,8 @@
+import json
 import re
 import time
-import json
 import uuid
-from curl_cffi import requests
+
 from bot.bot import Bot
 from bot.claude.claude_ai_session import ClaudeAiSession
 from bot.openai.open_ai_image import OpenAIImage
@@ -11,6 +11,7 @@ from bridge.context import Context, ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
 from config import conf
+from curl_cffi import requests
 
 
 class ClaudeAIBot(Bot, OpenAIImage):

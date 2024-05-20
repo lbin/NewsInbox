@@ -1,9 +1,7 @@
 import web
-from wechatpy.crypto import WeChatCrypto
+from config import conf
 from wechatpy.exceptions import InvalidSignatureException
 from wechatpy.utils import check_signature
-
-from config import conf
 
 MAX_UTF8_LEN = 2048
 

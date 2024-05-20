@@ -1,15 +1,15 @@
-# encoding:utf-8
 
 import json
 import os
 
-import plugins
 from bridge.bridge import Bridge
 from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from common import const
 from common.log import logger
 from config import conf
+
+import plugins
 from plugins import *
 
 
@@ -46,7 +46,7 @@ class Role(Plugin):
         curdir = os.path.dirname(__file__)
         config_path = os.path.join(curdir, "roles.json")
         try:
-            with open(config_path, "r", encoding="utf-8") as f:
+            with open(config_path, encoding="utf-8") as f:
                 config = json.load(f)
                 self.tags = {tag: (desc, []) for tag, desc in config["tags"].items()}
                 self.roles = {}
@@ -137,11 +137,11 @@ class Role(Plugin):
                     for role in self.tags[tag][1]:
                         help_text += f"{role['title']}: {role['remark']}\n"
                 else:
-                    help_text = f"未知角色类型。\n"
+                    help_text = "未知角色类型。\n"
                     help_text += "目前的角色类型有: \n"
                     help_text += "，".join([self.tags[tag][0] for tag in self.tags]) + "\n"
             else:
-                help_text = f"请输入角色类型。\n"
+                help_text = "请输入角色类型。\n"
                 help_text += "目前的角色类型有: \n"
                 help_text += "，".join([self.tags[tag][0] for tag in self.tags]) + "\n"
             reply = Reply(ReplyType.INFO, help_text)
@@ -150,7 +150,7 @@ class Role(Plugin):
             return
         elif sessionid not in self.roleplays:
             return
-        logger.debug("[Role] on_handle_context. content: %s" % content)
+        logger.debug("[Role] on_handle_context. content: {}".format(content))
         if desckey is not None:
             if len(clist) == 1 or (len(clist) > 1 and clist[1].lower() in ["help", "帮助"]):
                 reply = Reply(ReplyType.INFO, self.get_help_text(verbose=True))
