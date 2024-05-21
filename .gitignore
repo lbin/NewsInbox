@@ -173,3 +173,5 @@ celerybeat-schedule
 /api/schedule/data
 /api/schedule/black_list.txt
 /api/schedule/key_words.txt
+
+/wechat-agent/qrcode.png

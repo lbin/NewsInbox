@@ -174,7 +174,7 @@ available_setting = {
     "linkai_api_key": "",
     "linkai_app_code": "",
     "linkai_api_base": "https://api.link-ai.chat",  # linkAI服务地址，若国内无法访问或延迟较高可改为 https://api.link-ai.tech
-
+    "we_work_webhook": "",  # 企业微信机器人webhook
     "feishu_get_token_url": "https://open.feishu.cn/open-apis/auth/v3/app_access_token/internal",
     "feishu_add_record_url": "https://open.feishu.cn/open-apis/bitable/v1/apps/DM8Ib7DNeah45XsA8kOcxvYenHd/tables/tblELLHLYuKXsVf9/records",
     "feishu_app_id": "cli_a6bafbc7acbdd013",

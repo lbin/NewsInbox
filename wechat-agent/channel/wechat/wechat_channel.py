@@ -3,7 +3,8 @@
 """
 wechat channel
 """
-
+import base64
+import hashlib
 import io
 import json
 import os
@@ -76,7 +77,15 @@ def _check(func):
 
     return wrapper
 
-
+def send_wechat(webhook, data):
+    header = {
+                "Content-Type": "application/json",
+                "Charset": "UTF-8"
+                }
+    info = requests.post(url=webhook, json=data, headers=header)
+    print(info)
+    
+    
 # 可用的二维码生成接口
 # https://api.qrserver.com/v1/create-qr-code/?size=400×400&data=https://www.abc.com
 # https://api.isoyu.com/qr/?m=1&e=L&p=20&url=https://www.abc.com
@@ -111,7 +120,38 @@ def qrCallback(uuid, status, qrcode):
         qr.add_data(url)
         qr.make(fit=True)
         qr.print_ascii(invert=True)
+        
+        im = qr.make_image()
+        im.save("qrcode.png")
+        
+        with open(r'qrcode.png', 'rb') as file:
+            encodestr = base64.b64encode(file.read())
+            image_data = str(encodestr, 'utf-8')
 
+        with open(r'qrcode.png', 'rb') as file:
+            md = hashlib.md5()
+            md.update(file.read())
+            image_md5 = md.hexdigest()
+        
+        # im_base64 = base64.b64encode(im.tobytes()).decode('utf-8')
+        # im_md5 = hashlib.md5(im.tobytes()).hexdigest()
+        
+        data = {
+            "msgtype": "image",
+            "image": {
+                "base64": image_data,
+                "md5": image_md5
+            }
+        }
+        send_wechat(conf().get("we_work_webhook"), data)
+        
+        # data={
+        #     "msgtype": "image",
+        #     "image": {
+        #         "base64": im
+        #         }
+        # }
+        # send_wechat("https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=ef4d4926-a4ce-4f66-aeba-ca469a28607f", data)
 
 @singleton
 class WechatChannel(ChatChannel):
@@ -396,6 +436,7 @@ def _send_logout():
 def _send_qr_code(qrcode_list: list):
     try:
         from common.linkai_client import chat_client
+
         if chat_client.client_id:
             chat_client.send_qrcode(qrcode_list)
     except Exception as e:
