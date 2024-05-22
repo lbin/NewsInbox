@@ -133,8 +133,6 @@ def qrCallback(uuid, status, qrcode):
             md.update(file.read())
             image_md5 = md.hexdigest()
         
-        # im_base64 = base64.b64encode(im.tobytes()).decode('utf-8')
-        # im_md5 = hashlib.md5(im.tobytes()).hexdigest()
         
         data = {
             "msgtype": "image",
@@ -145,13 +143,6 @@ def qrCallback(uuid, status, qrcode):
         }
         send_wechat(conf().get("we_work_webhook"), data)
         
-        # data={
-        #     "msgtype": "image",
-        #     "image": {
-        #         "base64": im
-        #         }
-        # }
-        # send_wechat("https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=ef4d4926-a4ce-4f66-aeba-ca469a28607f", data)
 
 @singleton
 class WechatChannel(ChatChannel):

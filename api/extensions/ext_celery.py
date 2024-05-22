@@ -39,19 +39,24 @@ def init_app(app: Flask) -> Celery:
     app.extensions["celery"] = celery_app
 
     imports = [
-        "schedule.crawl_from_rsshub_task",
-        "schedule.daily_summary_task",
+        # "schedule.crawl_from_rsshub_task",
+        # "schedule.daily_summary_task",
+        "schedule.test_crawl_from_rsshub_task",
     ]
 
     beat_schedule = {
-        "crawl_from_rsshub_task": {
-            "task": "schedule.crawl_from_rsshub_task.crawl_from_rsshub_task",
-            "schedule": crontab(minute=0, hour="*"),
+        # "crawl_from_rsshub_task": {
+        #     "task": "schedule.crawl_from_rsshub_task.crawl_from_rsshub_task",
+        #     "schedule": crontab(minute=0, hour="*"),
+        # },
+        "test_crawl_from_rsshub_task": {
+            "task": "schedule.test_crawl_from_rsshub_task.crawl_from_rsshub_task",
+            "schedule": crontab(minute=22, hour=18),
         },
-        "daily_summary_task": {
-            "task": "schedule.daily_summary_task.daily_summary_task",
-            "schedule": crontab(minute=0, hour=17, day_of_week="1-5"),
-        }
+        # "daily_summary_task": {
+        #     "task": "schedule.daily_summary_task.daily_summary_task",
+        #     "schedule": crontab(minute=0, hour=17, day_of_week="1-5"),
+        # }
     }
     celery_app.conf.update(beat_schedule=beat_schedule, imports=imports, timezone="Asia/Shanghai", enable_utc=False)
 
