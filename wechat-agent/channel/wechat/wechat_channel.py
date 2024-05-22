@@ -300,7 +300,7 @@ class WechatChannel(ChatChannel):
             new_tags.append(tag)
         tags = new_tags
 
-        new_json_data = {'分类': 'Technology', '标签': tags, '项目来源': '个人分享', '项目名称': json_data['title'], '来源': url, '总结': json_data['summary'], '关键要点': key_points_str, '添加人': user}
+        new_json_data = {'分类': ['Technology'], '标签': tags, '项目来源': '个人分享', '项目名称': json_data['title'], '来源': url, '总结': json_data['summary'], '关键要点': key_points_str, '添加人': user}
 
         new_data={'fields': new_json_data}
         status = requests.post(feishu_add_record_url, headers=feishu_headers, json=new_data)
