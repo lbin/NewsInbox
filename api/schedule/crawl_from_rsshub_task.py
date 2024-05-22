@@ -1,15 +1,11 @@
-import datetime
-import html
 import json
-import os
 import time
-from urllib.parse import urlparse
 
 import app
 import feedparser
-import pytz
-import requests
 
+from servers.feishu_wrapper import send_to_feishu
+from servers.llm_common_post import sum4all
 from .config import conf, load_config
 from .logger import logger
 
@@ -24,154 +20,6 @@ def load_key_words():
         black_words = f.readlines()
         black_words = [word.strip() for word in black_words]
     return key_words, black_words
-
-def save_to_json(json_data, sender, focus=True):
-    # Generate file name based on current time and sender
-    current_date = datetime.datetime.now().strftime("%Y-%m-%d")
-    if focus:
-        folder_path = f"./schedule/data/{current_date}/focus"
-    else:
-        folder_path = f"./schedule/data/{current_date}/non-focus"
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    file_name = f"{folder_path}/{datetime.datetime.now().strftime('%H-%M-%S')}_{sender}.json"
-    # Save new_json_data to json file
-    with open(file_name, "w") as json_file:
-        json.dump(json_data, json_file, ensure_ascii=False, indent=4)
-
-def parse_to_json():
-    pass
-
-
-def send_to_feishu(content, key_words, black_words, url, sender, title=None, published=None):
-    feishu_get_token_url = "https://open.feishu.cn/open-apis/auth/v3/app_access_token/internal"
-    feishu_add_record_url = (
-        "https://open.feishu.cn/open-apis/bitable/v1/apps/DM8Ib7DNeah45XsA8kOcxvYenHd/tables/tblELLHLYuKXsVf9/records"
-    )
-    logger.info("content: {}".format(content))
-    if content is None:
-        return None
-    if content[0] != '{':
-        data_index = content.find("json")
-        json_data = content[data_index + 3 : -3]
-        json_data = json_data.replace("\n", "")
-        # json_data = json_data.replace(" ", "")
-        json_data = json_data[1:]
-    else:
-        json_data = content
-        
-    try:
-        json_data = json.loads(json_data)
-    except Exception as e:
-        logger.error("Error: {}\n Content: {}".format(e, json_data))
-        return None
-    
-    config = conf()
-
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    token_json_data = {"app_id": config.get('feishu_app_id'), "app_secret": config.get('feishu_app_secret')}
-    feishu_token_response = requests.post(feishu_get_token_url, headers=headers, json=token_json_data)
-
-    feishu_headers = {
-        "Content-Type": "application/json; charset=utf-8",
-        "Authorization": f"Bearer {feishu_token_response.json()['app_access_token']}",
-    }
-
-    key_points_str = ""
-    for key in json_data["key_points"]:
-        key_points_str += json_data["key_points"][key] + "\n"
-
-    # send_title = title if title else json_data["title"]
-    send_title = json_data["title"]
-        
-    tags = json_data["tags"]
-    new_tags = []
-    for tag in tags:
-        tag = tag.replace("#", "")
-        new_tags.append(tag)
-    tags = new_tags
-    logger.info("tags: {}".format(tags))
-        
-    published_timestamp = datetime.datetime.strptime(published, "%a, %d %b %Y %H:%M:%S %Z")
-    # Convert published_timestamp to China time zone
-    published_timestamp = published_timestamp.astimezone(pytz.timezone('Asia/Shanghai'))
-    published_timestamp = int(published_timestamp.timestamp())*1000
-        
-    new_json_data = {
-        "分类": json_data["class"],
-        "标签": tags,
-        "项目名称": send_title,
-        "来源": url,
-        "总结": json_data["summary"],
-        "关键要点": key_points_str,
-        "项目来源": sender,
-        "添加人": "Bot",
-        "产品": json_data["products"],
-        "团队": json_data["teams"],
-        "发布时间": published_timestamp
-    }
-         
-        
-    for black_word in black_words:
-        for tag in tags:
-            if black_word in tag:
-                logger.info("黑名单匹配成功: black_word-{} tag-{}".format(black_word, tag))
-                save_to_json(new_json_data, sender, False)
-                return None
-
-    for key_word in key_words:
-        for tag in tags:
-            if key_word in tag:
-                logger.info("关键词匹配成功: key_word-{} tag-{}".format(key_word, tag))
-                save_to_json(new_json_data, sender)
-                new_data = {"fields": new_json_data}
-                status = requests.post(feishu_add_record_url, headers=feishu_headers, json=new_data)
-                return status
-            
-    save_to_json(new_json_data, sender, False)
-    return None
-
-
-def _get_jina_url(target_url):
-    jina_reader_base = "https://r.jina.ai"
-    return jina_reader_base + "/" + target_url
-
-
-def _get_openai_payload(target_url_content):
-    config = conf()
-    prompt = config.get('prompt')
-    logger.info(f"target_url_content_length: {len(target_url_content)}")
-    target_url_content = target_url_content[:config.get('max_words')]  # 通过字符串长度简单进行截断
-    sum_prompt = f"{prompt}\n\n'''{target_url_content}'''"
-    messages = [{"role": "user", "content": sum_prompt}]
-    # payload = {"model": "moonshot-v1-8k", "messages": messages}
-    payload = {"model": config.get('open_ai_model'), "messages": messages}
-    return payload
-
-
-def sum4all(url):
-    try:
-        target_url = html.unescape(url)
-        jina_url = _get_jina_url(target_url)
-        response = requests.get(jina_url, timeout=60)
-        response.raise_for_status()
-        target_url_content = response.text
-        
-        config = conf()
-        
-        open_ai_api_base = config.get("open_ai_api_base")
-        open_ai_api_key = config.get("open_ai_api_key")
-        openai_chat_url = config.get("openai_chat_url")
-        
-        openai_headers = {"Authorization": f"Bearer {open_ai_api_key}", "Host": urlparse(open_ai_api_base).netloc}
-        openai_payload = _get_openai_payload(target_url_content)
-        response = requests.post(openai_chat_url, headers=openai_headers, json=openai_payload, timeout=60)
-        response.raise_for_status()
-        result = response.json()["choices"][0]["message"]["content"]
-        return result
-    except Exception as e:
-        logger.error("Error: {}".format(e))
-        return None
 
 
 def feed_parser(rss, key_words, black_words):
@@ -223,10 +71,10 @@ def feed_parser(rss, key_words, black_words):
                         update_title_flag = True
                         with open(rss_json_file, "w") as json_file:
                             json.dump(rss_config, json_file, ensure_ascii=False, indent=4)
-                    content = sum4all(entry.link)
+                    content = sum4all(config, entry.link)
                     published = entry.published if hasattr(entry, "published") else feed_updated
                     # TODO 数据同步写入本地数据库
-                    send_to_feishu(content, key_words, black_words, entry.link, rss_config['rss_name'], entry.title, published)
+                    send_to_feishu(config, content, key_words, black_words, entry.link, rss_config['rss_name'], entry.title, published)
                     time.sleep(config.get("rss_interval"))
 
             return None
@@ -234,7 +82,6 @@ def feed_parser(rss, key_words, black_words):
 @app.celery.task
 def crawl_from_rsshub_task():
     key_words, black_words = load_key_words()
-    
     
     load_config()
     config = conf()

@@ -31,7 +31,7 @@ nohup celery -A app.celery worker --loglevel INFO -P gevent &
 - [x] Techcrunch
 - [ ] fastcompany 解析失败, Need VPN
 - [x] theverge
-- [x] producthunt 
+- [ ] producthunt 解析失败, Need VPN
 - [ ] X
 
 ### 公众号

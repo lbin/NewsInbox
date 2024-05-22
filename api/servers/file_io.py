@@ -17,21 +17,6 @@ def get_timestamp(time_string):
     return timestamp
 
 
-
-# def get_timestamp(time_string):
-#     if '-' in time_string:
-#         time_string = time_string.replace("T", " ").replace("-", " ").replace(":", " ")
-#         time_string = time_string[:19]
-#         timestamp = datetime.datetime.strptime(time_string, "%Y %m %d %H %M %S")
-#         timestamp = timestamp.astimezone(pytz.timezone("GMT"))
-#         timestamp = timestamp.strftime("%a, %d %b %Y %H:%M:%S GMT")
-    
-#     timestamp = datetime.datetime.strptime(time_string, "%a, %d %b %Y %H:%M:%S %Z")
-#     timestamp = timestamp.astimezone(pytz.timezone("Asia/Shanghai"))
-#     timestamp = int(timestamp.timestamp()) * 1000
-#     return timestamp
-    
-
 def save_to_json(json_data, sender=None, focus=True):
     # Generate file name based on current time and sender
     current_date = datetime.datetime.now().strftime("%Y-%m-%d")
