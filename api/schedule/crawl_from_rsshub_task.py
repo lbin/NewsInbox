@@ -25,10 +25,13 @@ def load_key_words():
         black_words = [word.strip() for word in black_words]
     return key_words, black_words
 
-def save_to_json(json_data, sender):
+def save_to_json(json_data, sender, focus=True):
     # Generate file name based on current time and sender
     current_date = datetime.datetime.now().strftime("%Y-%m-%d")
-    folder_path = f"./schedule/data/{current_date}"
+    if focus:
+        folder_path = f"./schedule/data/{current_date}/focus"
+    else:
+        folder_path = f"./schedule/data/{current_date}/non-focus"
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
     file_name = f"{folder_path}/{datetime.datetime.now().strftime('%H-%M-%S')}_{sender}.json"
@@ -95,7 +98,7 @@ def send_to_feishu(content, key_words, black_words, url, sender, title=None, pub
     published_timestamp = int(published_timestamp.timestamp())*1000
         
     new_json_data = {
-        "分类": "Technology",
+        "分类": json_data["class"],
         "标签": tags,
         "项目名称": send_title,
         "来源": url,
@@ -107,23 +110,25 @@ def send_to_feishu(content, key_words, black_words, url, sender, title=None, pub
         "团队": json_data["teams"],
         "发布时间": published_timestamp
     }
-        
-    save_to_json(new_json_data, sender)
+         
         
     for black_word in black_words:
         for tag in tags:
             if black_word in tag:
                 logger.info("黑名单匹配成功: black_word-{} tag-{}".format(black_word, tag))
+                save_to_json(new_json_data, sender, False)
                 return None
 
     for key_word in key_words:
         for tag in tags:
             if key_word in tag:
                 logger.info("关键词匹配成功: key_word-{} tag-{}".format(key_word, tag))
+                save_to_json(new_json_data, sender)
                 new_data = {"fields": new_json_data}
                 status = requests.post(feishu_add_record_url, headers=feishu_headers, json=new_data)
                 return status
-
+            
+    save_to_json(new_json_data, sender, False)
     return None
 
 
