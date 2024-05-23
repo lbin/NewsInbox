@@ -2,7 +2,8 @@ import html
 from urllib.parse import urlparse
 
 import requests
-from common.logger import logger
+
+from ..common.logger import logger
 
 
 def _get_openai_payload(config, target_url_content):

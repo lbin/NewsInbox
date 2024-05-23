@@ -3,9 +3,10 @@ import time
 
 import app
 import feedparser
-from common.logger import logger
-from servers.feishu_wrapper import send_to_feishu
-from servers.llm_common_post import sum4all
+
+from newsinbox.common.logger import logger
+from newsinbox.servers.feishu_wrapper import send_to_feishu
+from newsinbox.servers.llm_common_post import sum4all
 
 from .config import conf, load_config
 

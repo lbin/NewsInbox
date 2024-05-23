@@ -4,7 +4,8 @@ import json
 import os
 
 import app
-from common.logger import logger
+
+from newsinbox.common.logger import logger
 
 
 def get_current_data():

@@ -8,6 +8,7 @@
 ## Installation
 
 ```bash
+python setup.py install --user
 docker-compose -f docker-compose.middleware.yaml -p newsinbox up -d
 nohup celery -A app.celery beat --loglevel INFO &
 nohup celery -A app.celery worker --loglevel INFO -P gevent &

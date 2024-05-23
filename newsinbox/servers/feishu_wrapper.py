@@ -1,7 +1,8 @@
 import json
 
 import requests
-from common.logger import logger
+
+from ..common.logger import logger
 
 from .file_io import get_timestamp, save_to_json
 
