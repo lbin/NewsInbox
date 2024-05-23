@@ -2,9 +2,9 @@ import datetime
 import json
 import os
 
+import dateutil.parser
 import pytz
 
-import dateutil.parser
 
 def get_timestamp(time_string):
     # TODO: 优化时间戳获取方法

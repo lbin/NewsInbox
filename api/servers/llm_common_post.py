@@ -1,7 +1,9 @@
 import html
+from urllib.parse import urlparse
+
 import requests
 from common.logger import logger
-from urllib.parse import urlparse
+
 
 def _get_openai_payload(config, target_url_content):
     prompt = config.get('prompt')

@@ -4,8 +4,7 @@ import json
 import os
 
 import app
-
-from .logger import logger
+from common.logger import logger
 
 
 def get_current_data():
