@@ -7,8 +7,7 @@ import feedparser
 from newsinbox.common.logger import logger
 from newsinbox.servers.feishu_wrapper import send_to_feishu
 from newsinbox.servers.llm_common_post import sum4all
-
-from .config import conf, load_config
+from newsinbox.common.config import conf, load_config
 
 
 def load_key_words():
@@ -16,7 +15,7 @@ def load_key_words():
     with open("schedule/key_words.txt") as f:
         key_words = f.readlines()
         key_words = [word.strip() for word in key_words]
-    
+
     with open("schedule/black_list.txt") as f:
         black_words = f.readlines()
         black_words = [word.strip() for word in black_words]
@@ -25,16 +24,16 @@ def load_key_words():
 
 def feed_parser(rss, key_words, black_words):
     config = conf()
-    
-    rss_json_file = 'schedule/rss_configs/'+ rss
+
+    rss_json_file = "schedule/rss_configs/" + rss
     with open(rss_json_file) as json_file:
         rss_config = json.load(json_file)
-        
+
     if rss_config["rss_url"].startswith("http") is False:
         url = config.get("rss_base_url") + rss_config["rss_url"]
     else:
         url = rss_config["rss_url"]
-        
+
     feed = feedparser.parse(url)
 
     if feed.bozo:
@@ -45,12 +44,11 @@ def feed_parser(rss, key_words, black_words):
             feed_updated = feed.feed.updated
         else:
             feed_updated = feed.updated
- 
+
         logger.info("{}".format(feed_updated))
-        
 
         if feed_updated == rss_config["rss_last_updated"]:
-            logger.info("{} No New Feed".format(rss_config['rss_name']))
+            logger.info("{} No New Feed".format(rss_config["rss_name"]))
             return rss
         else:
             rss_config["rss_last_updated"] = feed_updated
@@ -75,19 +73,29 @@ def feed_parser(rss, key_words, black_words):
                     content = sum4all(config, entry.link)
                     published = entry.published if hasattr(entry, "published") else feed_updated
                     # TODO 数据同步写入本地数据库
-                    send_to_feishu(config, content, key_words, black_words, entry.link, rss_config['rss_name'], entry.title, published)
+                    send_to_feishu(
+                        config,
+                        content,
+                        key_words,
+                        black_words,
+                        entry.link,
+                        rss_config["rss_name"],
+                        entry.title,
+                        published,
+                    )
                     time.sleep(config.get("rss_interval"))
 
             return None
 
+
 @app.celery.task
 def crawl_from_rsshub_task():
     key_words, black_words = load_key_words()
-    
+
     load_config()
     config = conf()
     rss_group = config.get("rss_group", {})
-    
+
     for rss in rss_group:
         logger.info("RSS Source: {}".format(rss))
         feed_parser(rss, key_words, black_words)

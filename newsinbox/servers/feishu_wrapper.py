@@ -3,7 +3,6 @@ import json
 import requests
 
 from ..common.logger import logger
-
 from .file_io import get_timestamp, save_to_json
 
 
@@ -12,10 +11,10 @@ def _send_to_feishu(config, data):
     feishu_add_record_url = (
         "https://open.feishu.cn/open-apis/bitable/v1/apps/DM8Ib7DNeah45XsA8kOcxvYenHd/tables/tblELLHLYuKXsVf9/records"
     )
-    
+
     headers = {"Content-Type": "application/json; charset=utf-8"}
     token_json_data = {"app_id": config.get("feishu_app_id"), "app_secret": config.get("feishu_app_secret")}
-    
+
     feishu_token_response = requests.post(feishu_get_token_url, headers=headers, json=token_json_data)
     # TODO response error handling
     feishu_headers = {
@@ -25,6 +24,7 @@ def _send_to_feishu(config, data):
     # TODO response error handling
     status = requests.post(feishu_add_record_url, headers=feishu_headers, json=data)
     return status
+
 
 def send_to_feishu(config, content, key_words, black_words, url, sender, title=None, published=None):
     logger.info("content: {}".format(content))
@@ -45,7 +45,6 @@ def send_to_feishu(config, content, key_words, black_words, url, sender, title=N
         logger.error("Error: {}\n Content: {}".format(e, json_data))
         return None
 
-
     key_points_str = ""
     for key in json_data["key_points"]:
         key_points_str += json_data["key_points"][key] + "\n"
@@ -58,7 +57,7 @@ def send_to_feishu(config, content, key_words, black_words, url, sender, title=N
         tag = tag.replace("#", "")
         new_tags.append(tag)
     tags = new_tags
-    
+
     logger.info("tags: {}".format(tags))
     logger.info("published: {}".format(published))
 

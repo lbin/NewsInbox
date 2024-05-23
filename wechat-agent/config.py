@@ -1,5 +1,3 @@
-# encoding:utf-8
-
 import json
 import logging
 import os
@@ -142,12 +140,6 @@ available_setting = {
     "wechatcomapp_secret": "",  # 企业微信app的secret
     "wechatcomapp_agent_id": "",  # 企业微信app的agent_id
     "wechatcomapp_aes_key": "",  # 企业微信app的aes_key
-    # 飞书配置
-    "feishu_port": 80,  # 飞书bot监听端口
-    "feishu_app_id": "",  # 飞书机器人应用APP Id
-    "feishu_app_secret": "",  # 飞书机器人APP secret
-    "feishu_token": "",  # 飞书 verification token
-    "feishu_bot_name": "",  # 飞书机器人的名字
     # 钉钉配置
     "dingtalk_client_id": "",  # 钉钉机器人Client ID
     "dingtalk_client_secret": "",  # 钉钉机器人Client Secret
@@ -175,20 +167,21 @@ available_setting = {
     "linkai_app_code": "",
     "linkai_api_base": "https://api.link-ai.chat",  # linkAI服务地址，若国内无法访问或延迟较高可改为 https://api.link-ai.tech
     "we_work_webhook": "",  # 企业微信机器人webhook
+    # 飞书配置
+    "feishu_port": 80,  # 飞书bot监听端口
+    "feishu_token": "",  # 飞书 verification token
+    "feishu_bot_name": "",  # 飞书机器人的名字
     "feishu_get_token_url": "https://open.feishu.cn/open-apis/auth/v3/app_access_token/internal",
     "feishu_add_record_url": "https://open.feishu.cn/open-apis/bitable/v1/apps/DM8Ib7DNeah45XsA8kOcxvYenHd/tables/tblELLHLYuKXsVf9/records",
     "feishu_app_id": "cli_a6bafbc7acbdd013",
     "feishu_app_secret": "8U3AAH3AOPtwVOFdWusswctp5EOcqFM5",
-    "prompt": "我需要对下面引号内文档进行总结，总结输出包括以下四个部分:\n标题\n一句话总结\n关键要点,用数字序号列出3-5个文章的核心内容\n标签: #xx #xx #xx. 以JSON格式返回: {title: 标题, summury: 总结的内容, key_points: {'1': 关键要点1; '2': 关键要点; '3': 关键要点}, tags: [#xx, #xx, #xx]}",
+    "prompt": "",
     "max_words": 8000,
     "jina_reader_base": "https://r.jina.ai",
+    "rss_interval": 1,
+    "rss_base_url": "",
     "rss_group": [
-        {
-            "rss_name": "36kr",
-            "rss_url": "http://halfjourney.xyz:1200/36kr/news",
-            "rss_last_updated": "Tue, 07 May 2024 03:44:44 GMT",
-            "rss_last_updated_title": "中年男人的神车信仰，崩塌了"
-        }
+        "36kr.json", "readhub.json", "dx2025.json", "infoq.json", "pingwest.json", "qbitai.json", "sspai.json", "woshipm.json"
     ]
 }
 
@@ -302,7 +295,7 @@ def get_root():
 
 
 def read_file(path):
-    with open(path, mode="r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         return f.read()
 
 
