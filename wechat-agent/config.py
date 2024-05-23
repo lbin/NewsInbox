@@ -1,9 +1,8 @@
+
 import json
 import logging
 import os
 import pickle
-
-from common.log import logger
 
 # 将所有可用的配置项写在字典里, 请使用小写字母
 # 此处的配置值无实际意义, 程序不会读取此处的配置, 仅用于提示格式, 请将配置加入到config.json中
@@ -13,6 +12,7 @@ available_setting = {
     # openai apibase, 当use_azure_chatgpt为true时, 需要设置对应的api base
     "open_ai_api_base": "https://api.openai.com/v1",
     "open_ai_model": "moonshot-v1-8k",
+    "openai_chat_url": "",
     "proxy": "",  # openai使用的代理
     # chatgpt模型,  当use_azure_chatgpt为true时, 其名称为Azure上model deployment名称
     "model": "gpt-3.5-turbo",  # 还支持 gpt-4, gpt-4-turbo, wenxin, xunfei, qwen
@@ -23,7 +23,6 @@ available_setting = {
     "single_chat_prefix": ["bot", "@bot"],  # 私聊时文本需要包含该前缀才能触发机器人回复
     "single_chat_reply_prefix": "[bot] ",  # 私聊时自动回复的前缀, 用于区分真人
     "single_chat_reply_suffix": "",  # 私聊时自动回复的后缀, \n 可以换行
-    "accept_friend_commands": ["加好友"],  # 自动接受好友请求的申请信息
     "group_chat_prefix": ["@bot"],  # 群聊时包含该前缀则会触发机器人回复
     "group_chat_reply_prefix": "",  # 群聊时自动回复的前缀
     "group_chat_reply_suffix": "",  # 群聊时自动回复的后缀, \n 可以换行
@@ -140,6 +139,7 @@ available_setting = {
     "wechatcomapp_secret": "",  # 企业微信app的secret
     "wechatcomapp_agent_id": "",  # 企业微信app的agent_id
     "wechatcomapp_aes_key": "",  # 企业微信app的aes_key
+    
     # 钉钉配置
     "dingtalk_client_id": "",  # 钉钉机器人Client ID
     "dingtalk_client_secret": "",  # 钉钉机器人Client Secret
@@ -166,30 +166,22 @@ available_setting = {
     "linkai_api_key": "",
     "linkai_app_code": "",
     "linkai_api_base": "https://api.link-ai.chat",  # linkAI服务地址, 若国内无法访问或延迟较高可改为 https://api.link-ai.tech
-    "we_work_webhook": "",  # 企业微信机器人webhook
     # 飞书配置
     "feishu_port": 80,  # 飞书bot监听端口
     "feishu_token": "",  # 飞书 verification token
     "feishu_bot_name": "",  # 飞书机器人的名字
     "feishu_get_token_url": "https://open.feishu.cn/open-apis/auth/v3/app_access_token/internal",
     "feishu_add_record_url": "https://open.feishu.cn/open-apis/bitable/v1/apps/DM8Ib7DNeah45XsA8kOcxvYenHd/tables/tblELLHLYuKXsVf9/records",
-    "feishu_app_id": "cli_a6bafbc7acbdd013",
-    "feishu_app_secret": "8U3AAH3AOPtwVOFdWusswctp5EOcqFM5",
-    "prompt": "",
+    "feishu_app_id": "",
+    "feishu_app_secret": "",
+    "prompt": "我需要对下面引号内文档进行总结, 总结输出包括以下四个部分:\n标题\n一句话总结\n关键要点,用数字序号列出3-5个文章的核心内容\n标签: #xx #xx #xx. 以JSON格式返回: {title: 标题, summury: 总结的内容, key_points: {'1': 关键要点1; '2': 关键要点; '3': 关键要点}, tags: [#xx, #xx, #xx]}",
     "max_words": 8000,
     "jina_reader_base": "https://r.jina.ai",
-    "rss_interval": 1,
+    "rss_interval": 60,
     "rss_base_url": "",
     "rss_group": [
-        "36kr.json",
-        "readhub.json",
-        "dx2025.json",
-        "infoq.json",
-        "pingwest.json",
-        "qbitai.json",
-        "sspai.json",
-        "woshipm.json",
-    ],
+        "36kr.json", "readhub.json", "dx2025.json", "infoq.json", "pingwest.json", "qbitai.json", "sspai.json", "woshipm.json"
+    ]
 }
 
 
@@ -231,20 +223,20 @@ class Config(dict):
         try:
             with open(os.path.join(get_appdata_dir(), "user_datas.pkl"), "rb") as f:
                 self.user_datas = pickle.load(f)
-                logger.info("[Config] User datas loaded.")
+                logging.info("[Config] User datas loaded.")
         except FileNotFoundError as e:
-            logger.info("[Config] User datas file not found, ignore.")
+            logging.info("[Config] User datas file not found, ignore.")
         except Exception as e:
-            logger.info("[Config] User datas error: {}".format(e))
+            logging.info("[Config] User datas error: {}".format(e))
             self.user_datas = {}
 
     def save_user_datas(self):
         try:
             with open(os.path.join(get_appdata_dir(), "user_datas.pkl"), "wb") as f:
                 pickle.dump(self.user_datas, f)
-                logger.info("[Config] User datas saved.")
+                logging.info("[Config] User datas saved.")
         except Exception as e:
-            logger.info("[Config] User datas error: {}".format(e))
+            logging.info("[Config] User datas error: {}".format(e))
 
 
 config = Config()
@@ -254,20 +246,20 @@ def save_config():
     global config
     config.save_user_datas()
     # config 保存为json文件
-    with open(os.path.join(get_appdata_dir(), "config.json"), "w", encoding="utf-8") as f:
+    with open("schedule/config.json", "w", encoding="utf-8") as f:
         f.write(json.dumps(config, ensure_ascii=False, indent=4))
-        logger.info("[Config] Config saved.")
+        logging.info("[Config] Config saved.")
 
 
 def load_config():
     global config
-    config_path = "./config.json"
+    config_path = "schedule/config.json"
     if not os.path.exists(config_path):
-        logger.info("配置文件不存在, 将使用config-template.json模板")
+        logging.info("配置文件不存在, 将使用config-template.json模板")
         config_path = "./config-template.json"
 
     config_str = read_file(config_path)
-    logger.debug("[INIT] config str: {}".format(config_str))
+    logging.debug("[INIT] config str: {}".format(config_str))
 
     # 将json字符串反序列化为dict类型
     config = Config(json.loads(config_str))
@@ -277,7 +269,7 @@ def load_config():
     for name, value in os.environ.items():
         name = name.lower()
         if name in available_setting:
-            logger.info("[INIT] override config by environ args: {}={}".format(name, value))
+            logging.info("[INIT] override config by environ args: {}={}".format(name, value))
             try:
                 config[name] = eval(value)
             except:
@@ -289,10 +281,10 @@ def load_config():
                     config[name] = value
 
     if config.get("debug", False):
-        logger.setLevel(logging.DEBUG)
-        logger.debug("[INIT] set log level to DEBUG")
+        logging.setLevel(logging.DEBUG)
+        logging.debug("[INIT] set log level to DEBUG")
 
-    # logger.info("[INIT] load config: {}".format(config))
+    # logging.info("[INIT] load config: {}".format(config))
 
     config.load_user_datas()
 
@@ -313,7 +305,7 @@ def conf():
 def get_appdata_dir():
     data_path = os.path.join(get_root(), conf().get("appdata_dir", ""))
     if not os.path.exists(data_path):
-        logger.info("[INIT] data path not exists, create it: {}".format(data_path))
+        logging.info("[INIT] data path not exists, create it: {}".format(data_path))
         os.makedirs(data_path)
     return data_path
 

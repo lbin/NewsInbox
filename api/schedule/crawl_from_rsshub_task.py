@@ -92,7 +92,7 @@ def feed_parser(rss, key_words, black_words):
 def crawl_from_rsshub_task():
     key_words, black_words = load_key_words()
 
-    load_config()
+    load_config("schedule/config.json")
     config = conf()
     rss_group = config.get("rss_group", {})
 

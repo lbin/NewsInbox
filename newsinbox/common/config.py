@@ -246,14 +246,16 @@ def save_config():
     global config
     config.save_user_datas()
     # config 保存为json文件
-    with open("schedule/config.json", "w", encoding="utf-8") as f:
+    with open("./config.json", "w", encoding="utf-8") as f:
         f.write(json.dumps(config, ensure_ascii=False, indent=4))
         logging.info("[Config] Config saved.")
 
 
-def load_config():
+def load_config(config_path=None):
     global config
-    config_path = "schedule/config.json"
+    if config_path is None:
+        config_path = "./config.json"
+    # config_path = "schedule/config.json"
     if not os.path.exists(config_path):
         logging.info("配置文件不存在, 将使用config-template.json模板")
         config_path = "./config-template.json"
