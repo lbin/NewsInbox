@@ -6,7 +6,7 @@ import feedparser
 
 from newsinbox.common.logger import logger
 from newsinbox.servers.feishu_wrapper import send_to_feishu
-from newsinbox.servers.llm_common_post import sum4all
+from newsinbox.servers.llm_common_post import sum4all, get_url_content
 from newsinbox.common.config import conf, load_config
 
 
@@ -70,7 +70,8 @@ def feed_parser(rss, key_words, black_words):
                         update_title_flag = True
                         with open(rss_json_file, "w") as json_file:
                             json.dump(rss_config, json_file, ensure_ascii=False, indent=4)
-                    content = sum4all(config, entry.link)
+                    raw_content = get_url_content(entry.link)
+                    content = sum4all(config,raw_content)
                     published = entry.published if hasattr(entry, "published") else feed_updated
                     # TODO 数据同步写入本地数据库
                     send_to_feishu(
