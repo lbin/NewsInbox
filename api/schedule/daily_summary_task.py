@@ -53,7 +53,7 @@ def daily_summary_task():
         最终得到的内容需要完全用中文表达, 并组织成markdown的格式  \
         一级标题类似于daily news about sports或todays news about finance之类的 \
         每一条新闻的标题作为二级标题 \
-        总结内容高亮, 紧接着列出三个关键要点, 最后给出这些新闻的来源以及链接。\
+        总结内容高亮, 紧接着列出三个关键要点, 三个关键点不需要换行, 写在一个段落里, 最后给出这些新闻的来源以及链接。\
         请不要遗漏任何一条新闻。内容全部输出, 不需要因为内容多而询问我是否需要全部输出"
     )
     content = summary_stream(config, json_files, len(json_files))
