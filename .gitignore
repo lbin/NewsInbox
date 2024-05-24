@@ -178,3 +178,6 @@ plugins.json
 itchat.pkl
 user_datas.pkl
 client_config.json
+
+/api/templates/*.html
+!/api/templates/index.html

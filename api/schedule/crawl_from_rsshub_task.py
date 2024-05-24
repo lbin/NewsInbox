@@ -4,10 +4,10 @@ import time
 import app
 import feedparser
 
+from newsinbox.common.config import conf, load_config
 from newsinbox.common.logger import logger
 from newsinbox.servers.feishu_wrapper import send_to_feishu
-from newsinbox.servers.llm_common_post import sum4all, get_url_content
-from newsinbox.common.config import conf, load_config
+from newsinbox.servers.llm_common_post import get_url_content, sum4all
 
 
 def load_key_words():

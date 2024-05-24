@@ -167,6 +167,7 @@ available_setting = {
     "linkai_app_code": "",
     "linkai_api_base": "https://api.link-ai.chat",  # linkAI服务地址, 若国内无法访问或延迟较高可改为 https://api.link-ai.tech
     # 飞书配置
+    "we_work_webhook": "",
     "feishu_port": 80,  # 飞书bot监听端口
     "feishu_token": "",  # 飞书 verification token
     "feishu_bot_name": "",  # 飞书机器人的名字
@@ -253,7 +254,7 @@ def save_config():
 
 def load_config():
     global config
-    config_path = "schedule/config.json"
+    config_path = "config.json"
     if not os.path.exists(config_path):
         logging.info("配置文件不存在, 将使用config-template.json模板")
         config_path = "./config-template.json"
