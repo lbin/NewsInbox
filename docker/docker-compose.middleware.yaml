@@ -55,6 +55,19 @@ services:
     ports:
       - "6379:6379"
 
+  mongodb:
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./volumes/mongo/data:/data/db
+      - ./volumes/mongo/conf:/data/conf
+      - ./volumes/mongo/log:/data/log
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: newsinbox123456
+
   # # The Weaviate vector store.
   # weaviate:
   #   image: semitechnologies/weaviate:1.19.0

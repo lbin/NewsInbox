@@ -181,3 +181,4 @@ client_config.json
 
 /api/templates/*.html
 !/api/templates/index.html
+/docker/nginx

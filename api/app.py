@@ -17,6 +17,8 @@ import sys
 from logging.handlers import RotatingFileHandler
 
 from config import Config
+from newsinbox.common.config import load_config, conf
+from newsinbox.servers.llm_common_post import get_url_content, sum4all
 
 # from events import event_handlers
 from extensions import (
@@ -100,6 +102,18 @@ def health():
         status=200,
         content_type="application/json",
     )
+    
+@app.route("/summary", methods=["GET", "POST"])
+def summary():
+    q_data = request.get_data()
+    data = json.loads(q_data)
+    url = data["url"]
+    
+    load_config("schedule/config.json")
+    content = get_url_content(url)
+    content = sum4all(conf(),content)
+    
+    return content
 
 
 @app.route("/threads")
@@ -119,4 +133,6 @@ def threads():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=6001)
+    # app.run(host="0.0.0.0", port=6001)
+    context = (r'/home/ubuntu/ssl/halfjourney.xyz_bundle.pem', r'/home/ubuntu/ssl/halfjourney.xyz.key')
+    app.run(host="0.0.0.0", port=443, ssl_context=context, debug=True)
