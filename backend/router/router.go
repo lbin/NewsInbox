@@ -18,14 +18,14 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Recovery())
 	r.Use(middleware.Cors())
 
-	routerInnerApi := r.Group("/inner/api").Use(request.AddRequestId)
+	routerInnerApi := r.Group("/inner/miniapp").Use(request.AddRequestId)
 	routerInnerApi.Use()
 	{
 		routerInnerApi.POST("healthz", common.Health)         //心跳检测
 		routerInnerApi.POST("cindexes", common.CreateIndexes) //创建数据库索引
 	}
 	//业务功能路由
-	miniRouterApi := r.Group("/api").Use(request.AddRequestId)
+	miniRouterApi := r.Group("/miniapp").Use(request.AddRequestId)
 	miniRouterApi.POST("/mini/login", user.GetMiniProgramInfo)
 	miniRouterApi.Use(auth.CheckUriToken)
 	{
@@ -37,7 +37,7 @@ func InitRouter() *gin.Engine {
 		miniRouterApi.POST("/user/paper/update", user.UpdateUserPaperRecord)
 	}
 
-	miniRouterApiWithoutAuth := r.Group("/api").Use(request.AddRequestId)
+	miniRouterApiWithoutAuth := r.Group("/miniapp").Use(request.AddRequestId)
 	miniRouterApiWithoutAuth.Use()
 	{
 		//文章相关信息接口

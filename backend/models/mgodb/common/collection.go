@@ -11,7 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-const DATABASE = "arxiv"
+const DATABASE = "newsinbox"
 
 // 核心配置信息
 const CollectionKaggleSnapshot = "t_kaggle_snapshot"

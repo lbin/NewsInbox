@@ -7,7 +7,7 @@ import (
 	appContext "learnerai/golib/app/context"
 	"learnerai/golib/app/logger"
 	mgodb "learnerai/models/mgodb/common"
-	milvus "learnerai/models/milvus/common"
+	// milvus "learnerai/models/milvus/common"
 	"learnerai/router"
 	"net/http"
 	"os"
@@ -32,12 +32,12 @@ func init() {
 	logger.Infof(ctx, "community init config execute start %d", time.Now().Unix())
 
 	conf.GetGlobalConf(ctx)
-	//mongodb
+	// mongodb
 	mgodb.Setup()
-	//milvus
-	milvus.Setup()
+	// milvus
+	// milvus.Setup()
 	initCrontab()
-	//设置redis,用于用户登录做缓存
+	// 设置redis,用于用户登录做缓存
 	// client.SetupByHost(conf.GlobalEdgeSetting.Redis.Host, conf.GlobalEdgeSetting.Redis.Password)
 	logger.Infof(ctx, "community init config execute end %d", time.Now().Unix())
 }
