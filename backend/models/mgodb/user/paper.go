@@ -27,7 +27,7 @@ type ListUserPaperCondition struct {
 func AddUserPaper(ctx *gin.Context, UserPaper UserPaper) error {
 	logger.Infof(ctx, "AddUserPaper [condition:%+v]", UserPaper)
 	mClient := DB.Mongo
-	var table = CollectionPaperInfo
+	var table = CollectionNewsInfo
 	collection := mClient.Database(GetDataBase()).Collection(table)
 	info, err := collection.InsertOne(GetContext(), UserPaper)
 
@@ -41,7 +41,7 @@ func AddUserPaper(ctx *gin.Context, UserPaper UserPaper) error {
 
 func ListUserPaper(ctx *gin.Context, condition ListUserPaperCondition) (recordList []*UserPaper) {
 	mClient := DB.Mongo
-	collection := mClient.Database(GetDataBase()).Collection(CollectionPaperInfo)
+	collection := mClient.Database(GetDataBase()).Collection(CollectionNewsInfo)
 	filter := bson.M{}
 	if condition.Uid != "" {
 		filter["_id"] = condition.Uid
@@ -73,7 +73,7 @@ func ListUserPaper(ctx *gin.Context, condition ListUserPaperCondition) (recordLi
 func UpdateUserPaper(ctx *gin.Context, UserPaper UserPaper) error {
 	logger.Infof(ctx, "UpdateUserPaper [condition:%+v]", UserPaper)
 	mClient := DB.Mongo
-	collection := mClient.Database(GetDataBase()).Collection(CollectionPaperInfo)
+	collection := mClient.Database(GetDataBase()).Collection(CollectionNewsInfo)
 	update := bson.M{}
 	update["update_date"] = time.Now()
 
@@ -103,7 +103,7 @@ func UpdateUserPaper(ctx *gin.Context, UserPaper UserPaper) error {
 
 func DeleteUserPaper(ctx *gin.Context, updateTime time.Time) error {
 	mClient := DB.Mongo
-	collection := mClient.Database(GetDataBase()).Collection(CollectionPaperInfo)
+	collection := mClient.Database(GetDataBase()).Collection(CollectionNewsInfo)
 	filter := bson.M{
 		"update_date": bson.M{
 			"$lt": updateTime,

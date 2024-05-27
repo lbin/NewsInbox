@@ -48,7 +48,7 @@ type ListDailyInfoCondition struct {
 }
 
 func AddDailyInfo(ctx *gin.Context, DailyInfo DailyInfo) error {
-	logger.Infof(ctx, "AddDailyInfo [condition:%+v]", CollectionArxivDaily)
+	logger.Infof(ctx, "AddDailyInfo [condition:%+v]", CollectionNewsDaily)
 	mClient := DB.Mongo
 	var table = CollectionKaggleSnapshot
 	collection := mClient.Database(GetDataBase()).Collection(table)
@@ -64,29 +64,8 @@ func AddDailyInfo(ctx *gin.Context, DailyInfo DailyInfo) error {
 
 func ListDailyInfo(ctx *gin.Context, condition ListDailyInfoCondition) (recordList []*DailyInfo) {
 	mClient := DB.Mongo
-	collection := mClient.Database(GetDataBase()).Collection(CollectionArxivDaily)
-	// 定义要查询的字段
-	// projection := bson.D{
-	// 	{"_id", 1},
-	// 	{"entry_id", 1},
-	// 	{"submitter", 1},
-	// 	{"authors", 1},
-	// 	{"title", 1},
-	// 	{"title_ch", 1},
-	// 	{"comment", 1},
-	// 	{"journal_ref", 1},
-	// 	{"doi", 1},
-	// 	{"primary_category", 1},
-	// 	{"categories", 1},
-	// 	{"pdf_url", 1},
-	// 	{"keywords", 1},
-	// 	{"keywords_ch", 1},
-	// 	{"abstract", 1},
-	// 	{"abstract_ch", 1},
-	// 	{"updated", 1},
-	// 	{"published", 1},
-	// 	{"authors_parsed", 1},
-	// }
+	collection := mClient.Database(GetDataBase()).Collection(CollectionNewsDaily)
+	
 
 	filter := bson.M{}
 	filter["updated"] = bson.M{"$gte": condition.StartTime, "$lte": condition.EndTime}
@@ -127,7 +106,7 @@ func ListDailyInfo(ctx *gin.Context, condition ListDailyInfoCondition) (recordLi
 
 func DeleteDailyInfo(ctx *gin.Context, updateTime time.Time) error {
 	mClient := DB.Mongo
-	collection := mClient.Database(GetDataBase()).Collection(CollectionArxivDaily)
+	collection := mClient.Database(GetDataBase()).Collection(CollectionNewsDaily)
 	filter := bson.M{
 		"update_date": bson.M{
 			"$lt": updateTime,
@@ -143,7 +122,7 @@ func DeleteDailyInfo(ctx *gin.Context, updateTime time.Time) error {
 
 func UnsetDailyInfoField(ctx *gin.Context, id string, fields []string) error {
 	mClient := DB.Mongo
-	collection := mClient.Database(GetDataBase()).Collection(CollectionArxivDaily)
+	collection := mClient.Database(GetDataBase()).Collection(CollectionNewsDaily)
 	unset := make(bson.M)
 	for _, f := range fields {
 		unset[f] = ""
@@ -167,7 +146,7 @@ type IncPaperCondition struct {
 func IncPaperCount(ctx *gin.Context, incInfo IncPaperCondition) error {
 	logger.Infof(ctx, "UpdatepaperInfo [condition:%+v]", incInfo)
 	mClient := DB.Mongo
-	collection := mClient.Database(GetDataBase()).Collection(CollectionArxivDaily)
+	collection := mClient.Database(GetDataBase()).Collection(CollectionNewsDaily)
 
 	//更新文档计数
 	inc := bson.M{}

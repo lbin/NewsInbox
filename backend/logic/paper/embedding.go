@@ -141,7 +141,7 @@ type ScoredResult struct {
 func SearchSimilar(ctx *gin.Context, arxivId string, topK int) ([]ScoredResult, error) {
 	collName := common.CollectionKaggleSnapshot
 	if strings.Contains(arxivId, "v") {
-		collName = common.CollectionArxivDaily
+		collName = common.CollectionNewsDaily
 	}
 	pp := mgodb.FindPaperWithEmbeddingById(ctx, collName, arxivId)
 	if pp == nil {

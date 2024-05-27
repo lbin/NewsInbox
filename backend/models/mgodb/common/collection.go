@@ -14,10 +14,9 @@ import (
 const DATABASE = "newsinbox"
 
 // 核心配置信息
-const CollectionKaggleSnapshot = "t_kaggle_snapshot"
-const CollectionArxivDaily = "t_arxiv_daily"
+const CollectionNewsDaily = "t_news_daily"
 const CollectionUserInfo = "t_user_info"
-const CollectionPaperInfo = "t_user_paper"
+const CollectionNewsInfo = "t_user_news"
 
 //todo 注意事项
 //1.新加表是否需要同步，如果需要同步必须加入 MapSyncType2Table 中
@@ -39,45 +38,21 @@ type MongoDbIndex struct {
 
 var table2Indexes = []MongoDbIndex{
 	{
-		CollectionName: CollectionKaggleSnapshot,
-		Keys: map[string]int32{
-			"_id": 1,
-		},
-		IsUnique:  true,
-		IndexName: "t_kaggle_snapshot_index_1",
-	},
-	{
-		CollectionName: CollectionKaggleSnapshot,
-		Keys: map[string]int32{
-			"title": 1,
-		},
-		IsUnique:  false,
-		IndexName: "t_kaggle_snapshot_index_2",
-	},
-	{
-		CollectionName: CollectionKaggleSnapshot,
-		Keys: map[string]int32{
-			"update_date": -1,
-		},
-		IsUnique:  false,
-		IndexName: "t_kaggle_snapshot_index_3",
-	},
-	{
-		CollectionName: CollectionArxivDaily,
+		CollectionName: CollectionNewsDaily,
 		Keys: map[string]int32{
 			"title": 1,
 		},
 		IsUnique:  true,
-		IndexName: "t_arxiv_daily_index_1",
+		IndexName: "t_news_daily_index_1",
 	},
 	{
-		CollectionName: CollectionArxivDaily,
+		CollectionName: CollectionNewsDaily,
 		Keys: map[string]int32{
 			"updated":    1,
 			"categories": 1,
 		},
 		IsUnique:  false,
-		IndexName: "t_arxiv_daily_index_2",
+		IndexName: "t_news_daily_index_2",
 	},
 	{
 		CollectionName: CollectionUserInfo,
@@ -88,7 +63,7 @@ var table2Indexes = []MongoDbIndex{
 		IndexName: "t_user_info_1",
 	},
 	{
-		CollectionName: CollectionPaperInfo,
+		CollectionName: CollectionNewsInfo,
 		Keys: map[string]int32{
 			"update_date": -1,
 		},
