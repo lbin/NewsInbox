@@ -87,9 +87,9 @@ if app.config["TESTING"]:
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
-        return render_template("index.html")
+        return render_template("today.html")
 
-    return redirect(url_for("index"))
+    return redirect(url_for("today"))
 
 
 

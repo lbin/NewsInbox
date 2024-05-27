@@ -40,7 +40,8 @@ def save_to_json(json_data, sender=None, focus=True):
 def save_to_pdf(markdown_str):
 
     html_content = markdown.markdown(markdown_str)
-    html_file_name = f"templates/{datetime.datetime.now().strftime('%Y-%m-%d')}.html"
+    # html_file_name = f"templates/{datetime.datetime.now().strftime('%Y-%m-%d')}.html"
+    html_file_name = "templates/today.html"
     
     with codecs.open(html_file_name, "w", encoding="utf-8") as f:
         f.write('<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>')

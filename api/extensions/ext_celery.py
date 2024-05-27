@@ -50,7 +50,7 @@ def init_app(app: Flask) -> Celery:
         },
         "daily_summary_task": {
             "task": "schedule.daily_summary_task.daily_summary_task",
-            "schedule": crontab(minute=30, hour=17, day_of_week="1-5"),
+            "schedule": crontab(minute=30, hour=17),
         }
     }
     celery_app.conf.update(beat_schedule=beat_schedule, imports=imports, timezone="Asia/Shanghai", enable_utc=False)
