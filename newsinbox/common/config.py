@@ -182,7 +182,10 @@ available_setting = {
     "rss_base_url": "",
     "rss_group": [
         "36kr.json", "readhub.json", "dx2025.json", "infoq.json", "pingwest.json", "qbitai.json", "sspai.json", "woshipm.json"
-    ]
+    ],
+    "mongo_user": "root",
+    "mongo_password": "newsinbox123456",
+    "mongo_host": "127.0.0.1:27017"
 }
 
 

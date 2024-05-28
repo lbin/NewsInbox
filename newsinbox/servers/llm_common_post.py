@@ -36,7 +36,7 @@ def get_url_content(url):
     try:
         target_url = html.unescape(url)
         jina_url = _get_jina_url(target_url)
-        response = requests.get(jina_url, timeout=120)
+        response = requests.get(jina_url, timeout=60)
         response.raise_for_status()
         return response.text
     except Exception as e:
@@ -87,7 +87,7 @@ def sum4all(config, content, max_tokens=0):
 
         openai_headers = {"Authorization": f"Bearer {open_ai_api_key}", "Host": urlparse(open_ai_api_base).netloc}
         openai_payload = _get_openai_payload(config, content, max_tokens)
-        response = requests.post(openai_chat_url, headers=openai_headers, json=openai_payload, timeout=240)
+        response = requests.post(openai_chat_url, headers=openai_headers, json=openai_payload, timeout=60)
         response.raise_for_status()
         result = response.json()["choices"][0]["message"]["content"]
         logger.info(response.json()["usage"])

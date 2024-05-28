@@ -17,8 +17,6 @@ import sys
 from logging.handlers import RotatingFileHandler
 
 from config import Config
-from newsinbox.common.config import load_config, conf
-from newsinbox.servers.llm_common_post import get_url_content, sum4all
 
 # from events import event_handlers
 from extensions import (
@@ -31,6 +29,9 @@ from extensions import (
 )
 from extensions.ext_database import db
 from flask import Response
+
+from newsinbox.common.config import conf, load_config
+from newsinbox.servers.llm_common_post import get_url_content, sum4all
 
 # from extensions.ext_login import login_manager
 

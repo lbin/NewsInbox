@@ -52,7 +52,7 @@ def feed_parser(rss, key_words, black_words):
             return rss
         else:
             rss_config["rss_last_updated"] = feed_updated
-
+            
             update_title_flag = False
             old_title = rss_config["rss_last_updated_title"]
 
@@ -83,6 +83,7 @@ def feed_parser(rss, key_words, black_words):
                         rss_config["rss_name"],
                         entry.title,
                         published,
+                        raw_content
                     )
                     time.sleep(config.get("rss_interval"))
 

@@ -1,9 +1,15 @@
+import hashlib
 import json
 
 import requests
 
 from ..common.logger import logger
+from .db_helper import add_news
 from .file_io import get_timestamp, save_to_json
+
+
+def get_md5(s):
+    return hashlib.md5(s.encode('utf-8')).hexdigest()
 
 
 def _send_to_feishu(config, data):
@@ -26,7 +32,7 @@ def _send_to_feishu(config, data):
     return status
 
 
-def send_to_feishu(config, content, key_words, black_words, url, sender, title=None, published=None):
+def send_to_feishu(config, content, key_words, black_words, url, sender, title=None, published=None, raw_content=None):
     logger.info("content: {}".format(content))
     if content is None:
         return None
@@ -57,6 +63,16 @@ def send_to_feishu(config, content, key_words, black_words, url, sender, title=N
         tag = tag.replace("#", "")
         new_tags.append(tag)
     tags = new_tags
+    
+    json_data["_id"] = get_md5(url)
+    json_data["tags"] = tags
+    json_data["key_points"] = key_points_str
+    json_data["url"] = url
+    json_data["sender"] = sender
+    json_data["add_person"] = "Bot"
+    json_data["published"] = get_timestamp(published)
+    json_data["raw_content"] = raw_content
+    add_news(config, "newsinbox.t_news_daily", json_data)
 
     logger.info("tags: {}".format(tags))
     logger.info("published: {}".format(published))
