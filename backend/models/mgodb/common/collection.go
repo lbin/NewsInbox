@@ -68,7 +68,7 @@ var table2Indexes = []MongoDbIndex{
 			"update_date": -1,
 		},
 		IsUnique:  false,
-		IndexName: "t_user_paper_1",
+		IndexName: "t_user_news_1",
 	},
 }
 

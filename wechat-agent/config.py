@@ -188,6 +188,12 @@ available_setting = {
             "user_name": "Name",
             "feishu_add_record_url": "https://open.feishu.cn/open-apis/bitable/v1/apps/DM8Ib7DNeah45XsA8kOcxvYenHd/tables/tblELLHLYuKXsVf9/records",
         }
+    ],
+    "user_group_group":[
+        {
+            "user_name": "Name",
+            "feishu_add_record_url": "https://open.feishu.cn/open-apis/bitable/v1/apps/DM8Ib7DNeah45XsA8kOcxvYenHd/tables/tblELLHLYuKXsVf9/records",
+        }
     ]
 }
 

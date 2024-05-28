@@ -13,12 +13,12 @@ type UpdateUserInfoReq struct {
 	FocusArea    []string `json:"focus_area"`    //关注领域列表
 }
 
-type UpdateUserPaperReq struct {
+type UpdateUserNewsReq struct {
 	Code   string `json:"code"`
 	DocId  string `json:"doc_id"`
-	Like   bool   `json:"like"`   //用户喜欢的paper id
-	UnLike bool   `json:"unlike"` //用户不喜欢的paper id
-	Read   bool   `json:"read"`   //用户已经阅读的paper id
+	Like   bool   `json:"like"`   //用户喜欢的news id
+	UnLike bool   `json:"unlike"` //用户不喜欢的news id
+	Read   bool   `json:"read"`   //用户已经阅读的news id
 }
 
 type GetMiniProgramCode struct {

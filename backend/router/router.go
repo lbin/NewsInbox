@@ -2,8 +2,7 @@ package router
 
 import (
 	"learnerai/controller/common"
-	"learnerai/controller/paper"
-	s2 "learnerai/controller/semanticscholar"
+	"learnerai/controller/news"
 	"learnerai/controller/user"
 	"learnerai/golib/app/middleware"
 	"learnerai/golib/app/request"
@@ -33,8 +32,8 @@ func InitRouter() *gin.Engine {
 		miniRouterApi.POST("/user/info/get", user.GetUserInfoRecord)
 		miniRouterApi.POST("/user/info/update", user.UpdateUserInfoRecord)
 		//用户与文章的关系接口
-		miniRouterApi.POST("/user/paper/get", user.GetUserPaperRecord)
-		miniRouterApi.POST("/user/paper/update", user.UpdateUserPaperRecord)
+		miniRouterApi.POST("/user/news/get", user.GetUserNewsRecord)
+		miniRouterApi.POST("/user/news/update", user.UpdateUserNewsRecord)
 	}
 
 	miniRouterApiWithoutAuth := r.Group("/miniapp").Use(request.AddRequestId)
@@ -42,14 +41,14 @@ func InitRouter() *gin.Engine {
 	{
 		//文章相关信息接口
 		miniRouterApiWithoutAuth.POST("/get/token", user.GetToken)
-		miniRouterApiWithoutAuth.POST("/paper/list", paper.GetPaperInfoRecord)
-		miniRouterApiWithoutAuth.POST("/daily/list", paper.GetDailyPaperInfoRecord)
-		miniRouterApiWithoutAuth.POST("/daily/unset", paper.UnsetDailyInfoField)
+		miniRouterApiWithoutAuth.POST("/news/list", news.GetNewsInfoRecord)
+		miniRouterApiWithoutAuth.POST("/daily/list", news.GetDailyNewsInfoRecord)
+		miniRouterApiWithoutAuth.POST("/daily/unset", news.UnsetDailyInfoField)
 		//文章相关元信息接口
-		miniRouterApiWithoutAuth.POST("/s2/paper/info", s2.GetPaperInfo)
-		miniRouterApiWithoutAuth.POST("/s2/paper/references", s2.GetPaperReference)
+		// miniRouterApiWithoutAuth.POST("/s2/news/info", s2.GetNewsInfo)
+		// miniRouterApiWithoutAuth.POST("/s2/news/references", s2.GetNewsReference)
 		//向量搜索相关接口
-		// miniRouterApiWithoutAuth.POST("/vector/search", paper.SearchSimilar)
+		// miniRouterApiWithoutAuth.POST("/vector/search", news.SearchSimilar)
 	}
 
 	return r

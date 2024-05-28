@@ -1,4 +1,4 @@
-curl --location 'http://127.0.0.1:8099/api/paper/list' \
+curl --location 'http://127.0.0.1:8099/api/news/list' \
 --header 'Content-Type: application/json' \
 --data '{
     "start_time": "2023-01-01T00:00:00Z",
