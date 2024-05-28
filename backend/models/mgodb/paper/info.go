@@ -34,7 +34,7 @@ type Version struct {
 type ListPaperInfoCondition struct {
 	Id            string    `json:"id"`
 	SearchContent string    `json:"search_content"`
-	Tag           []string  `json:"tag"`
+	Tags          []string  `json:"tags"`
 	StartTime     time.Time `json:"start_time"`
 	EndTime       time.Time `json:"end_time"`
 	Start         int64     `json:"start"`
@@ -50,10 +50,10 @@ func (c ListPaperInfoCondition) asFilter() bson.M {
 	}
 
 	filter["update_date"] = bson.M{"$gte": c.StartTime, "$lte": c.EndTime}
-	if len(c.Tag) == 1 {
-		filter["categories"] = c.Tag[0]
-	} else if len(c.Tag) > 1 {
-		filter["categories"] = bson.M{"$in": c.Tag}
+	if len(c.Tags) == 1 {
+		filter["categories"] = c.Tags[0]
+	} else if len(c.Tags) > 1 {
+		filter["categories"] = bson.M{"$in": c.Tags}
 	}
 	if c.SearchContent != "" {
 		regex := primitive.Regex{Pattern: c.SearchContent, Options: "i"} // 不区分大小写

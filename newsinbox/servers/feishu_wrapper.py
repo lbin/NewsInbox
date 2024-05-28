@@ -66,7 +66,7 @@ def send_to_feishu(config, content, key_words, black_words, url, sender, title=N
     
     json_data["_id"] = get_md5(url)
     json_data["tags"] = tags
-    # json_data["key_points"] = key_points_str
+    json_data["key_points"] = json.dumps(json_data["key_points"])
     json_data["url"] = url
     json_data["sender"] = sender
     json_data["add_person"] = "Bot"

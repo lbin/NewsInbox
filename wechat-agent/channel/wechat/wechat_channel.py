@@ -261,6 +261,7 @@ class WechatChannel(ChatChannel):
         user_group = conf().get("user_group")
         for tmp_user in user_group:
             if nick_name == tmp_user["user_name"]:
+                user = nick_name
                 feishu_add_record_url = tmp_user["feishu_add_record_url"]
                 break
         
@@ -298,7 +299,7 @@ class WechatChannel(ChatChannel):
             new_tags.append(tag)
         tags = new_tags
 
-        new_json_data = {'分类': ['Technology'], '标签': tags, '项目来源': '个人分享', '项目名称': json_data['title'], '来源': url, '总结': json_data['summary'], '关键要点': key_points_str, '添加人': nick_name}
+        new_json_data = {'分类': ['Technology'], '标签': tags, '项目来源': '个人分享', '项目名称': json_data['title'], '来源': url, '总结': json_data['summary'], '关键要点': key_points_str, '添加人': user}
 
         new_data={'fields': new_json_data}
         status = requests.post(feishu_add_record_url, headers=feishu_headers, json=new_data)
@@ -323,6 +324,7 @@ class WechatChannel(ChatChannel):
             itchat.send(reply.content, toUserName=receiver)
             if reply.url is not None:
                 nick_name = context["msg"].from_user_nickname
+                logger.info("[WX] sendMsg={}, receiver={}, nick_name={}".format(reply.content, receiver, nick_name))
                 self.send_to_feishu(reply, receiver, nick_name)
             logger.info("[WX] sendMsg={}, receiver={}".format(reply, receiver))
         elif reply.type == ReplyType.ERROR or reply.type == ReplyType.INFO:

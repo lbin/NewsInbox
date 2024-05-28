@@ -30,7 +30,7 @@ type DailyInfo struct {
 type ListDailyInfoCondition struct {
 	SearchContent string    `json:"search_content"`
 	Id            string    `json:"id"`
-	Tag           []string  `json:"tag"`
+	Tags          []string  `json:"tags"`
 	StartTime     time.Time `json:"start_time"`
 	EndTime       time.Time `json:"end_time"`
 	Start         int64     `json:"start"`
@@ -57,9 +57,9 @@ func ListDailyInfo(ctx *gin.Context, condition ListDailyInfoCondition) (recordLi
 	collection := mClient.Database(GetDataBase()).Collection(CollectionNewsDaily)
 
 	filter := bson.M{}
-	filter["updated"] = bson.M{"$gte": condition.StartTime, "$lte": condition.EndTime}
-	if len(condition.Tag) > 0 {
-		filter["categories"] = bson.M{"$in": condition.Tag}
+	filter["published"] = bson.M{"$gte": condition.StartTime, "$lte": condition.EndTime}
+	if len(condition.Tags) > 0 {
+		filter["categories"] = bson.M{"$in": condition.Tags}
 	}
 	if condition.SearchContent != "" {
 		regex := primitive.Regex{Pattern: condition.SearchContent, Options: "i"} // 不区分大小写
@@ -67,9 +67,9 @@ func ListDailyInfo(ctx *gin.Context, condition ListDailyInfoCondition) (recordLi
 	}
 	if condition.Id != "" {
 		filter["_id"] = condition.Id
-		delete(filter, "updated")
+		delete(filter, "published")
 	}
-	sort := bson.M{"updated": -1}
+	sort := bson.M{"published": -1}
 
 	logger.Infof(ctx, "ListDailyInfo Filter:", filter)
 	cursor, err := collection.Find(

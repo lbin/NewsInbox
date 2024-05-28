@@ -48,8 +48,8 @@ var table2Indexes = []MongoDbIndex{
 	{
 		CollectionName: CollectionNewsDaily,
 		Keys: map[string]int32{
-			"updated":    1,
-			"categories": 1,
+			"published": 1,
+			"tags":      1,
 		},
 		IsUnique:  false,
 		IndexName: "t_news_daily_index_2",
