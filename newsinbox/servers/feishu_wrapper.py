@@ -5,7 +5,7 @@ import requests
 
 from ..common.logger import logger
 from .db_helper import add_news
-from .file_io import get_timestamp, save_to_json
+from .file_io import get_time, get_timestamp, save_to_json
 
 
 def get_md5(s):
@@ -66,11 +66,11 @@ def send_to_feishu(config, content, key_words, black_words, url, sender, title=N
     
     json_data["_id"] = get_md5(url)
     json_data["tags"] = tags
-    json_data["key_points"] = key_points_str
+    # json_data["key_points"] = key_points_str
     json_data["url"] = url
     json_data["sender"] = sender
     json_data["add_person"] = "Bot"
-    json_data["published"] = get_timestamp(published)
+    json_data["published"] = get_time(published)
     json_data["raw_content"] = raw_content
     add_news(config, "newsinbox.t_news_daily", json_data)
 

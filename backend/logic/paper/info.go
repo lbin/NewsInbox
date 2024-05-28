@@ -10,7 +10,7 @@ import (
 func GetPaperInfo(ctx *gin.Context, request req.ListPaperInfoReq) (recordList []*paper.PaperInfo) {
 	condition := paper.ListPaperInfoCondition{
 		Id:            request.Id,
-		Category:      request.Category,
+		Tag:           request.Tag,
 		StartTime:     request.StartTime,
 		EndTime:       request.EndTime,
 		Start:         request.Start,
@@ -23,7 +23,7 @@ func GetPaperInfo(ctx *gin.Context, request req.ListPaperInfoReq) (recordList []
 
 func GetDailyPaperInfo(ctx *gin.Context, request req.ListPaperInfoReq) (recordList []*paper.DailyInfo) {
 	condition := paper.ListDailyInfoCondition{
-		Category:      request.Category,
+		Tag:           request.Tag,
 		StartTime:     request.StartTime,
 		Id:            request.Id,
 		EndTime:       request.EndTime,

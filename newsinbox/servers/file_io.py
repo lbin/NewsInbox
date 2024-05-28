@@ -9,13 +9,18 @@ import pdfkit
 import pytz
 
 
-def get_timestamp(time_string):
+def get_time(time_string):
     # TODO: 优化时间戳获取方法
     if "-" in time_string:
         timestamp = dateutil.parser.isoparse(time_string)
     else:
         timestamp = datetime.datetime.strptime(time_string, "%a, %d %b %Y %H:%M:%S %Z")
         timestamp = timestamp.astimezone(pytz.timezone("Asia/Shanghai"))
+    return timestamp
+
+
+def get_timestamp(time_string):
+    timestamp = get_time(time_string)
     timestamp = int(timestamp.timestamp()) * 1000
     return timestamp
 

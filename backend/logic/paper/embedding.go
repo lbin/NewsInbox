@@ -139,7 +139,7 @@ type ScoredResult struct {
 }
 
 func SearchSimilar(ctx *gin.Context, arxivId string, topK int) ([]ScoredResult, error) {
-	collName := common.CollectionKaggleSnapshot
+	collName := common.CollectionNewsDaily
 	if strings.Contains(arxivId, "v") {
 		collName = common.CollectionNewsDaily
 	}
@@ -177,7 +177,7 @@ func SearchSimilar(ctx *gin.Context, arxivId string, topK int) ([]ScoredResult, 
 	query := joinTextForReRank(*pp)
 	corpus := make([]string, len(res))
 	for i := range res {
-		pr := mgodb.FindPaperWithEmbeddingById(ctx, common.CollectionKaggleSnapshot, res[i].ArxivId)
+		pr := mgodb.FindPaperWithEmbeddingById(ctx, common.CollectionNewsDaily, res[i].ArxivId)
 		// TODO when fill milvus, also carry title and abstract.
 		if pr != nil {
 			corpus[i] = joinTextForReRank(*pr)

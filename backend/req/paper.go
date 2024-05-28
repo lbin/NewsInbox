@@ -5,7 +5,7 @@ import "time"
 type ListPaperInfoReq struct {
 	StartTime     time.Time `json:"start_time"`
 	Id            string    `json:"id"`
-	Category      []string  `json:"category"`
+	Tag           []string  `json:"tag"`
 	EndTime       time.Time `json:"end_time"`
 	SearchContent string    `json:"search_content"`
 	Start         int64     `json:"start"`

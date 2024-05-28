@@ -31,45 +31,10 @@ type Version struct {
 	Created  time.Time `json:"created" bson:"created"`
 }
 
-/*
-*   {
-    _id: '1903.05041',
-    submitter: 'Yuval Pinter',
-    authors: 'Yuval Pinter, Marc Marone, Jacob Eisenstein',
-    title: 'Character Eyes: Seeing Language through Character-Level Taggers',
-    comments: null,
-    'journal-ref': null,
-    doi: null,
-    'report-no': null,
-    categories: [ 'cs.CL' ],
-    license: 'http://arxiv.org/licenses/nonexclusive-distrib/1.0/',
-    abstract: '  Character-level models have been used extensively in recent years in NLP\n' +
-      'tasks as both supplements and replacements for closed-vocabulary token-level\n' +
-      'word representations. In one popular architecture, character-level LSTMs are\n' +
-      'used to feed token representations into a sequence tagger predicting\n' +
-      'token-level annotations such as part-of-speech (POS) tags. In this work, we\n' +
-      'examine the behavior of POS taggers across languages from the perspective of\n' +
-      'individual hidden units within the character LSTM. We aggregate the behavior of\n' +
-      'these units into language-level metrics which quantify the challenges that\n' +
-      'taggers face on languages with different morphological properties, and identify\n' +
-      'links between synthesis and affixation preference and emergent behavior of the\n' +
-      'hidden tagger layer. In a comparative experiment, we show how modifying the\n' +
-      'balance between forward and backward hidden units affects model arrangement and\n' +
-      'performance in these types of languages.\n',
-    versions: [ { version: 'v1', created: ISODate('2019-03-12T16:42:39.000Z') } ],
-    update_date: ISODate('2019-03-13T00:00:00.000Z'),
-    authors_parsed: [
-      [ 'Pinter', 'Yuval', '' ],
-      [ 'Marone', 'Marc', '' ],
-      [ 'Eisenstein', 'Jacob', '' ]
-    ]
-  }
-*/
-
 type ListPaperInfoCondition struct {
 	Id            string    `json:"id"`
 	SearchContent string    `json:"search_content"`
-	Category      []string  `json:"category"`
+	Tag           []string  `json:"tag"`
 	StartTime     time.Time `json:"start_time"`
 	EndTime       time.Time `json:"end_time"`
 	Start         int64     `json:"start"`
@@ -85,10 +50,10 @@ func (c ListPaperInfoCondition) asFilter() bson.M {
 	}
 
 	filter["update_date"] = bson.M{"$gte": c.StartTime, "$lte": c.EndTime}
-	if len(c.Category) == 1 {
-		filter["categories"] = c.Category[0]
-	} else if len(c.Category) > 1 {
-		filter["categories"] = bson.M{"$in": c.Category}
+	if len(c.Tag) == 1 {
+		filter["categories"] = c.Tag[0]
+	} else if len(c.Tag) > 1 {
+		filter["categories"] = bson.M{"$in": c.Tag}
 	}
 	if c.SearchContent != "" {
 		regex := primitive.Regex{Pattern: c.SearchContent, Options: "i"} // 不区分大小写
@@ -100,7 +65,7 @@ func (c ListPaperInfoCondition) asFilter() bson.M {
 func AddPaperInfo(ctx *gin.Context, paperinfo PaperInfo) error {
 	logger.Infof(ctx, "AddPaperInfo [condition:%+v]", paperinfo)
 	mClient := DB.Mongo
-	var table = CollectionKaggleSnapshot
+	var table = CollectionNewsDaily
 	collection := mClient.Database(GetDataBase()).Collection(table)
 	info, err := collection.InsertOne(GetContext(), paperinfo)
 
@@ -114,7 +79,7 @@ func AddPaperInfo(ctx *gin.Context, paperinfo PaperInfo) error {
 
 func ListPaperInfo(ctx *gin.Context, condition ListPaperInfoCondition) (recordList []*PaperInfo) {
 	mClient := DB.Mongo
-	collection := mClient.Database(GetDataBase()).Collection(CollectionKaggleSnapshot)
+	collection := mClient.Database(GetDataBase()).Collection(CollectionNewsDaily)
 	filter := condition.asFilter()
 	sort := bson.M{"update_date": -1}
 
@@ -142,7 +107,7 @@ func ListPaperInfo(ctx *gin.Context, condition ListPaperInfoCondition) (recordLi
 
 func DeletePaperInfo(ctx *gin.Context, updateTime time.Time) error {
 	mClient := DB.Mongo
-	collection := mClient.Database(GetDataBase()).Collection(CollectionKaggleSnapshot)
+	collection := mClient.Database(GetDataBase()).Collection(CollectionNewsDaily)
 	filter := bson.M{
 		"update_date": bson.M{
 			"$lt": updateTime,
