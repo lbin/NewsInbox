@@ -182,6 +182,12 @@ available_setting = {
     "rss_base_url": "",
     "rss_group": [
         "36kr.json", "readhub.json", "dx2025.json", "infoq.json", "pingwest.json", "qbitai.json", "sspai.json", "woshipm.json"
+    ],
+    "user_group":[
+        {
+            "user_name": "Name",
+            "feishu_add_record_url": "https://open.feishu.cn/open-apis/bitable/v1/apps/DM8Ib7DNeah45XsA8kOcxvYenHd/tables/tblELLHLYuKXsVf9/records",
+        }
     ]
 }
 

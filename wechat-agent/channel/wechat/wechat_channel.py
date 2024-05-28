@@ -247,7 +247,7 @@ class WechatChannel(ChatChannel):
         if context:
             self.produce(context)
             
-    def send_to_feishu(self, reply, resceiver):
+    def send_to_feishu(self, reply, resceiver, nick_name=None):
 
         feishu_get_token_url = "https://open.feishu.cn/open-apis/auth/v3/app_access_token/internal"
         feishu_add_record_url = "https://open.feishu.cn/open-apis/bitable/v1/apps/DM8Ib7DNeah45XsA8kOcxvYenHd/tables/tblELLHLYuKXsVf9/records"
@@ -257,6 +257,13 @@ class WechatChannel(ChatChannel):
         data_index = content.find("json")
         user = content[1:data_index-3]
         user = user.replace("\n", "")
+        
+        user_group = conf().get("user_group")
+        for tmp_user in user_group:
+            if nick_name == tmp_user["user_name"]:
+                feishu_add_record_url = tmp_user["feishu_add_record_url"]
+                break
+        
 
         json_data = content[data_index+3:-3]
         json_data = json_data.replace("\n", "")
@@ -291,7 +298,7 @@ class WechatChannel(ChatChannel):
             new_tags.append(tag)
         tags = new_tags
 
-        new_json_data = {'分类': ['Technology'], '标签': tags, '项目来源': '个人分享', '项目名称': json_data['title'], '来源': url, '总结': json_data['summary'], '关键要点': key_points_str, '添加人': user}
+        new_json_data = {'分类': ['Technology'], '标签': tags, '项目来源': '个人分享', '项目名称': json_data['title'], '来源': url, '总结': json_data['summary'], '关键要点': key_points_str, '添加人': nick_name}
 
         new_data={'fields': new_json_data}
         status = requests.post(feishu_add_record_url, headers=feishu_headers, json=new_data)
@@ -315,7 +322,8 @@ class WechatChannel(ChatChannel):
         if reply.type == ReplyType.TEXT:
             itchat.send(reply.content, toUserName=receiver)
             if reply.url is not None:
-                self.send_to_feishu(reply, receiver)
+                nick_name = context["msg"].from_user_nickname
+                self.send_to_feishu(reply, receiver, nick_name)
             logger.info("[WX] sendMsg={}, receiver={}".format(reply, receiver))
         elif reply.type == ReplyType.ERROR or reply.type == ReplyType.INFO:
             itchat.send(reply.content, toUserName=receiver)
