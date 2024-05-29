@@ -34,3 +34,15 @@ func GetDailyNewsInfo(ctx *gin.Context, request req.ListNewsInfoReq) (recordList
 	recordList = news.ListDailyInfo(ctx, condition)
 	return
 }
+
+func GetDailyUserNewsInfo(ctx *gin.Context, request req.ListUserNewsInfoReq) (recordList []*news.DailyInfo) {
+	condition := news.ListDailyUserInfoCondition{
+		StartTime: request.StartTime,
+		Id:        request.Id,
+		EndTime:   request.EndTime,
+		Start:     request.Start,
+		Limit:     request.Limit,
+	}
+	recordList = news.ListDailyUserInfo(ctx, condition)
+	return
+}

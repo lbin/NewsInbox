@@ -43,6 +43,7 @@ func InitRouter() *gin.Engine {
 		miniRouterApiWithoutAuth.POST("/get/token", user.GetToken)
 		miniRouterApiWithoutAuth.POST("/news/list", news.GetNewsInfoRecord)
 		miniRouterApiWithoutAuth.POST("/daily/list", news.GetDailyNewsInfoRecord)
+		miniRouterApiWithoutAuth.POST("/daily/user/list", news.GetDailyUserNewsInfoRecord)
 		miniRouterApiWithoutAuth.POST("/daily/unset", news.UnsetDailyInfoField)
 		//文章相关元信息接口
 		// miniRouterApiWithoutAuth.POST("/s2/news/info", s2.GetNewsInfo)

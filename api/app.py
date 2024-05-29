@@ -32,6 +32,8 @@ from flask import Response
 
 from newsinbox.common.config import conf, load_config
 from newsinbox.servers.llm_common_post import get_url_content, sum4all
+from newsinbox.servers.feishu_wrapper import send_to_feishu
+import datetime
 
 # from extensions.ext_login import login_manager
 
@@ -95,7 +97,6 @@ def index():
     return redirect(url_for("today"))
 
 
-
 @app.route("/health")
 def health():
     return Response(
@@ -103,17 +104,20 @@ def health():
         status=200,
         content_type="application/json",
     )
-    
-@app.route("/summary", methods=["GET", "POST"])
+
+
+@app.route("/summary", methods=["POST"])
 def summary():
     q_data = request.get_data()
     data = json.loads(q_data)
     url = data["url"]
-    
+
     load_config("schedule/config.json")
-    content = get_url_content(url)
-    content = sum4all(conf(),content)
-    
+    raw_content = get_url_content(url)
+    content = sum4all(conf(), raw_content)
+    published = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    send_to_feishu(conf(), content, [], [], url, "Bot", None, published, raw_content)
+
     return content
 
 

@@ -37,6 +37,14 @@ type ListDailyInfoCondition struct {
 	Limit         int64     `json:"limit"`
 }
 
+type ListDailyUserInfoCondition struct {
+	Id        []string  `json:"id"`
+	StartTime time.Time `json:"start_time"`
+	EndTime   time.Time `json:"end_time"`
+	Start     int64     `json:"start"`
+	Limit     int64     `json:"limit"`
+}
+
 // func AddDailyInfo(ctx *gin.Context, DailyInfo DailyInfo) error {
 // 	logger.Infof(ctx, "AddDailyInfo [condition:%+v]", CollectionNewsDaily)
 // 	mClient := DB.Mongo
@@ -67,6 +75,41 @@ func ListDailyInfo(ctx *gin.Context, condition ListDailyInfoCondition) (recordLi
 	}
 	if condition.Id != "" {
 		filter["_id"] = condition.Id
+		delete(filter, "published")
+	}
+	sort := bson.M{"published": -1}
+
+	logger.Infof(ctx, "ListDailyInfo Filter:", filter)
+	cursor, err := collection.Find(
+		GetContext(),
+		filter,
+		options.Find().SetSort(sort).SetSkip(condition.Start).SetLimit(condition.Limit),
+	)
+	if err != nil {
+		logger.Fatalf(ctx, "ListDailyInfo Cursor Failed [err=%+v]", err)
+		return
+	}
+	if err := cursor.Err(); err != nil {
+		logger.Fatalf(ctx, "ListDailyInfo Cursor Failed [err=%+v]", err)
+		return
+	}
+	defer cursor.Close(GetContext())
+	err = cursor.All(GetContext(), &recordList)
+	if err != nil {
+		logger.Fatalf(ctx, "ListLiveRecord Failed [err=%+v]", err)
+	}
+	return
+}
+
+func ListDailyUserInfo(ctx *gin.Context, condition ListDailyUserInfoCondition) (recordList []*DailyInfo) {
+	mClient := DB.Mongo
+	collection := mClient.Database(GetDataBase()).Collection(CollectionNewsDaily)
+
+	filter := bson.M{}
+	filter["published"] = bson.M{"$gte": condition.StartTime, "$lte": condition.EndTime}
+
+	if len(condition.Id) > 0 {
+		filter["_id"] = bson.M{"$in": condition.Id}
 		delete(filter, "published")
 	}
 	sort := bson.M{"published": -1}

@@ -34,3 +34,15 @@ func GetDailyNewsInfoRecord(ctx *gin.Context) {
 	data := news.GetDailyNewsInfo(ctx, request)
 	appG.Response(http.StatusOK, common.SUCCESS, data)
 }
+
+func GetDailyUserNewsInfoRecord(ctx *gin.Context) {
+	appG := goLabApp.Gin{C: ctx}
+	var request req.ListUserNewsInfoReq
+	err := ctx.BindJSON(&request)
+	if err != nil {
+		appG.ResponseError(common.InvalidParams, err.Error())
+		return
+	}
+	data := news.GetDailyUserNewsInfo(ctx, request)
+	appG.Response(http.StatusOK, common.SUCCESS, data)
+}

@@ -253,6 +253,9 @@ class WechatChannel(ChatChannel):
         feishu_add_record_url = "https://open.feishu.cn/open-apis/bitable/v1/apps/DM8Ib7DNeah45XsA8kOcxvYenHd/tables/tblELLHLYuKXsVf9/records"
 
         content = reply.content
+        if content is None:
+            return None
+        
         url = reply.url
         data_index = content.find("json")
         user = content[1:data_index-3]

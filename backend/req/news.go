@@ -12,6 +12,14 @@ type ListNewsInfoReq struct {
 	Limit         int64     `json:"limit"`
 }
 
+type ListUserNewsInfoReq struct {
+	StartTime time.Time `json:"start_time"`
+	Id        []string  `json:"id"`
+	EndTime   time.Time `json:"end_time"`
+	Start     int64     `json:"start"`
+	Limit     int64     `json:"limit"`
+}
+
 type UnsetDailyInfoField struct {
 	Id     string   `json:"id"`
 	Fields []string `json:"fields"`

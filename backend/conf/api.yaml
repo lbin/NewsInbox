@@ -4,13 +4,13 @@ app:
   LogSavePath: logs/
   LogSaveName: learnerai
   LogFileExt: log
-  LogLevel: debug
+  LogLevel: info
   TimeFormat: 2006010203
   ExpireTime: 1
   InterfaceTimeOut: 3
 
 server:
-  RunMode: debug
+  RunMode: release
   HttpPort: 8099
   ReadTimeout: 60
   WriteTimeout: 60
