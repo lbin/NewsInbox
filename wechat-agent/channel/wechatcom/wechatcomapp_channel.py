@@ -18,7 +18,7 @@ from channel.wechatcom.wechatcomapp_message import WechatComAppMessage
 from common.log import logger
 from common.singleton import singleton
 from common.utils import compress_imgfile, fsize, split_string_by_utf8_length
-from config import conf, subscribe_msg
+from newsinbox.common.config import conf, subscribe_msg
 from voice.audio_convert import any_to_amr, split_audio
 
 MAX_UTF8_LEN = 2048

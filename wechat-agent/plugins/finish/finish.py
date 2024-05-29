@@ -4,7 +4,7 @@ import plugins
 from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
-from config import conf
+from newsinbox.common.config import conf
 from plugins import *
 
 

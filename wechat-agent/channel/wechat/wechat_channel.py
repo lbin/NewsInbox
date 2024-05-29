@@ -22,7 +22,7 @@ from common.expired_dict import ExpiredDict
 from common.log import logger
 from common.singleton import singleton
 from common.time_check import time_checker
-from config import conf, get_appdata_dir
+from newsinbox.common.config import conf, get_appdata_dir
 from lib import itchat
 from lib.itchat.content import *
 

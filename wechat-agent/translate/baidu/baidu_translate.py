@@ -5,7 +5,7 @@ from hashlib import md5
 
 import requests
 
-from config import conf
+from newsinbox.common.config import conf
 from translate.translator import Translator
 
 

@@ -11,7 +11,7 @@ from bot.session_manager import SessionManager
 from bridge.context import Context, ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
-from config import conf, pconf
+from newsinbox.common.config import conf, pconf
 import threading
 from common import memory, utils
 import base64

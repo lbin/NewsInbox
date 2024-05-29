@@ -12,7 +12,7 @@ from channel.wechatmp.wechatmp_channel import WechatMPChannel
 from channel.wechatmp.wechatmp_message import WeChatMPMessage
 from common.log import logger
 from common.utils import split_string_by_utf8_length
-from config import conf, subscribe_msg
+from newsinbox.common.config import conf, subscribe_msg
 
 
 # This class is instantiated once per query

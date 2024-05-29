@@ -1,7 +1,8 @@
 import os
 import json
-from config import pconf, plugin_config, conf
+# from config import pconf, plugin_config, conf
 from common.log import logger
+from newsinbox.common.config import pconf, plugin_config, conf
 
 
 class Plugin:

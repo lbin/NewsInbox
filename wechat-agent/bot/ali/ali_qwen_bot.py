@@ -18,7 +18,7 @@ from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
 from common import const
-from config import conf, load_config
+from newsinbox.common.config import conf, load_config
 
 class AliQwenBot(Bot, OpenAIImage, OpenAIVision):
     def __init__(self):

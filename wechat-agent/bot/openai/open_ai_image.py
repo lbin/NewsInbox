@@ -6,7 +6,7 @@ from bridge.reply import Reply, ReplyType
 
 from common.log import logger
 from common.token_bucket import TokenBucket
-from config import conf
+from newsinbox.common.config import conf
 
 
 # OPENAI提供的画图接口

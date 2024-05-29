@@ -1,5 +1,5 @@
 from common.expired_dict import ExpiredDict
-from config import conf
+from newsinbox.common.config import conf
 
 
 class DifySession(object):

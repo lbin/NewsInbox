@@ -17,7 +17,7 @@ from bridge.reply import Reply, ReplyType
 from common.log import logger
 from common.token_bucket import TokenBucket
 from common import memory, utils, const
-from config import conf, load_config
+from newsinbox.common.config import conf
 
 
 # OpenAI对话模型API (可用)

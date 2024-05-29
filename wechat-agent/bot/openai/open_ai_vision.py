@@ -4,7 +4,7 @@ import requests
 
 from common.log import logger
 from common import const, utils, memory
-from config import conf
+from newsinbox.common.config import conf
 
 # OPENAI提供的图像识别接口
 class OpenAIVision(object):

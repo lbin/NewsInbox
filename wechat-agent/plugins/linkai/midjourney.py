@@ -1,5 +1,5 @@
 from enum import Enum
-from config import conf
+from newsinbox.common.config import conf
 from common.log import logger
 import requests
 import threading

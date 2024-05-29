@@ -3,7 +3,7 @@ import time
 import requests
 import time
 from wechatpy.enterprise import WeChatClient
-from config import conf
+from newsinbox.common.config import conf
 
 
 class WeChatTokenManager:

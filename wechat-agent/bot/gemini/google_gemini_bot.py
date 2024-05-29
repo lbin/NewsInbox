@@ -12,7 +12,7 @@ from bot.session_manager import SessionManager
 from bridge.context import ContextType, Context
 from bridge.reply import Reply, ReplyType
 from common.log import logger
-from config import conf
+from newsinbox.common.config import conf
 from bot.baidu.baidu_wenxin_session import BaiduWenxinSession
 
 

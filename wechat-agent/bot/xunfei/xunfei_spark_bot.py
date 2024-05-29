@@ -7,7 +7,7 @@ from bot.baidu.baidu_wenxin_session import BaiduWenxinSession
 from bridge.context import ContextType, Context
 from bridge.reply import Reply, ReplyType
 from common.log import logger
-from config import conf
+from newsinbox.common.config import conf
 from common import const
 import time
 import _thread as thread

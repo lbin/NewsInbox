@@ -15,7 +15,7 @@ from bridge.context import Context
 from bridge.reply import Reply, ReplyType
 from common.log import logger
 from common.singleton import singleton
-from config import conf
+from newsinbox.common.config import conf
 from common.expired_dict import ExpiredDict
 from bridge.context import ContextType
 from channel.chat_channel import ChatChannel, check_prefix

@@ -1,7 +1,7 @@
 import os
 import pathlib
 
-from config import conf
+from newsinbox.common.config import conf
 
 
 class TmpDir(object):

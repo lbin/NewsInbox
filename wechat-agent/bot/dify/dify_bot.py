@@ -10,7 +10,7 @@ from bridge.context import ContextType, Context
 from bridge.reply import Reply, ReplyType
 from common.log import logger
 from common import const
-from config import conf
+from newsinbox.common.config import conf
 
 class DifyBot(Bot):
     def __init__(self):

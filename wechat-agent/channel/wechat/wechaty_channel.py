@@ -20,7 +20,7 @@ from channel.chat_channel import ChatChannel
 from channel.wechat.wechaty_message import WechatyMessage
 from common.log import logger
 from common.singleton import singleton
-from config import conf
+from newsinbox.common.config import conf
 
 try:
     from voice.audio_convert import any_to_sil

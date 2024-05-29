@@ -13,7 +13,7 @@ from bridge.bridge import Bridge
 from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from common import const
-from config import conf, load_config, global_config
+from newsinbox.common.config import conf, load_config, global_config
 from plugins import *
 
 # 定义指令集

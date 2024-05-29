@@ -185,7 +185,19 @@ available_setting = {
     ],
     "mongo_user": "root",
     "mongo_password": "newsinbox123456",
-    "mongo_host": "127.0.0.1:27017"
+    "mongo_host": "127.0.0.1:27017",
+    "user_group":[
+        {
+            "user_name": "Name",
+            "feishu_add_record_url": "",
+        }
+    ],
+    "user_group_group":[
+        {
+            "user_name": "Name",
+            "feishu_add_record_url": "",
+        }
+    ]
 }
 
 

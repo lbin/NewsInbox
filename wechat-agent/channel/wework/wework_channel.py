@@ -17,7 +17,7 @@ from common.singleton import singleton
 from common.log import logger
 from common.time_check import time_checker
 from common.utils import compress_imgfile, fsize
-from config import conf
+from newsinbox.common.config import conf
 from channel.wework.run import wework
 from channel.wework import run
 from PIL import Image

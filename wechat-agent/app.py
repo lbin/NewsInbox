@@ -7,9 +7,10 @@ import time
 
 from channel import channel_factory
 from common import const
-from config import load_config
+# from config import load_config
 from plugins import *
 import threading
+from newsinbox.common.config import load_config
 
 
 def sigterm_handler_wrap(_signo):
@@ -37,7 +38,7 @@ def start_channel(channel_name: str):
 def run():
     try:
         # load config
-        load_config()
+        load_config("./config.json")
         # ctrl + c
         sigterm_handler_wrap(signal.SIGINT)
         # kill signal

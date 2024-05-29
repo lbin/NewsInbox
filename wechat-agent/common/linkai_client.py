@@ -2,7 +2,7 @@ from bridge.context import Context, ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
 from linkai import LinkAIClient, PushMsg
-from config import conf, pconf, plugin_config, available_setting
+from newsinbox.common.config import conf, pconf, plugin_config, available_setting
 from plugins import PluginManager
 import time
 

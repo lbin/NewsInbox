@@ -20,7 +20,7 @@ from channel.wechatmp.wechatmp_client import WechatMPClient
 from common.log import logger
 from common.singleton import singleton
 from common.utils import split_string_by_utf8_length
-from config import conf
+from newsinbox.common.config import conf
 from voice.audio_convert import any_to_mp3, split_audio
 
 # If using SSL, uncomment the following lines, and modify the certificate path.

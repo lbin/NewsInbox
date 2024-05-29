@@ -5,7 +5,7 @@ from bot.session_manager import SessionManager
 from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
-from config import conf, load_config
+from newsinbox.common.config import conf, load_config
 from .dashscope_session import DashscopeSession
 import os
 import dashscope

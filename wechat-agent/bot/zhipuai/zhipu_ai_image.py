@@ -1,5 +1,5 @@
 from common.log import logger
-from config import conf
+from newsinbox.common.config import conf
 
 
 # ZhipuAI提供的画图接口
