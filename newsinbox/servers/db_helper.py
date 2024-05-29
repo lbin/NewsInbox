@@ -1,4 +1,6 @@
 from pymongo import MongoClient
+from pymongo.errors import DuplicateKeyError
+from ..common.logger import logger
 
 
 def get_mongo_collection(config:dict, name: str):
@@ -12,4 +14,7 @@ def get_mongo_collection(config:dict, name: str):
     return MongoClient(url).get_database(db).get_collection(table)
 
 def add_news(config: dict, name: str, news: dict):
-    get_mongo_collection(config, name).insert_one(news)
+    try:
+        get_mongo_collection(config, name).insert_one(news)
+    except DuplicateKeyError:
+        logger.error("Key already exists, update or handle the error accordingly.")

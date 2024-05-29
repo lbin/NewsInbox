@@ -8,6 +8,16 @@ import markdown
 import pdfkit
 import pytz
 
+def load_key_words():
+    # 读取key_words.txt, 返回关键词列表
+    with open("schedule/key_words.txt") as f:
+        key_words = f.readlines()
+        key_words = [word.strip() for word in key_words]
+
+    with open("schedule/black_list.txt") as f:
+        black_words = f.readlines()
+        black_words = [word.strip() for word in black_words]
+    return key_words, black_words
 
 def get_time(time_string):
     # TODO: 优化时间戳获取方法

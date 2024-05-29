@@ -8,7 +8,7 @@ from newsinbox.common.config import conf, load_config
 from newsinbox.common.logger import logger
 from newsinbox.servers.feishu_wrapper import send_to_feishu
 from newsinbox.servers.llm_common_post import get_url_content, sum4all
-
+from newsinbox.servers.file_io import load_key_words
 
 def load_key_words():
     # 读取key_words.txt, 返回关键词列表

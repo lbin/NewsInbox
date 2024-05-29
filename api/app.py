@@ -31,8 +31,10 @@ from extensions.ext_database import db
 from flask import Response
 
 from newsinbox.common.config import conf, load_config
+from newsinbox.common.logger import logger
 from newsinbox.servers.llm_common_post import get_url_content, sum4all
 from newsinbox.servers.feishu_wrapper import send_to_feishu
+from newsinbox.servers.file_io import load_key_words
 import datetime
 
 # from extensions.ext_login import login_manager
@@ -113,10 +115,12 @@ def summary():
     url = data["url"]
 
     load_config("schedule/config.json")
+    logger.info(url)
     raw_content = get_url_content(url)
     content = sum4all(conf(), raw_content)
     published = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    send_to_feishu(conf(), content, [], [], url, "Bot", None, published, raw_content)
+    key_words, black_words = load_key_words()
+    send_to_feishu(conf(), content, key_words, black_words, url, "MiniAPP", None, published, raw_content)
 
     return content
 
