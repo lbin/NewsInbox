@@ -22,10 +22,6 @@ from plugins import *
 )
 class JinaSum(Plugin):
 
-    # jina_reader_base = "https://r.jina.ai"
-    # open_ai_api_base = "https://api.openai.com/v1"
-    # open_ai_model = "gpt-3.5-turbo"
-
     jina_reader_base = "https://r.jina.ai"
     open_ai_api_base = "https://api.moonshot.cn/v1"
     open_ai_model = "moonshot-v1-8k"

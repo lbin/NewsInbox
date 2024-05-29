@@ -197,7 +197,9 @@ available_setting = {
             "user_name": "Name",
             "feishu_add_record_url": "",
         }
-    ]
+    ],
+    "white_url_list": [],
+    "black_url_list": ["https://support.weixin.qq.com", "https://channels-aladin.wxqcloud.qq.com"]
 }
 
 

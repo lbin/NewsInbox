@@ -4,7 +4,6 @@
 import re
 import time
 import requests
-import config
 from bot.bot import Bot
 from bot.chatgpt.chat_gpt_session import ChatGPTSession
 from bot.session_manager import SessionManager
@@ -16,6 +15,7 @@ import threading
 from common import memory, utils
 import base64
 import os
+import newsinbox.common.config as config
 
 class LinkAIBot(Bot):
     # authentication failed
