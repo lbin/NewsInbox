@@ -44,10 +44,14 @@ func UpdateUserNews(ctx *gin.Context, request req.UpdateUserNewsReq) user.UserNe
 	if request.Read {
 		userNews.Read = []string{request.DocId}
 	}
+	if request.Upload {
+		userNews.Upload = []string{request.DocId}
+	}
 	var err error
 	if len(recordList) > 0 {
 		userNews.Like, userNews.UnLike = GetLikes(request, recordList[0].Like, recordList[0].UnLike)
 		userNews.Read = MergeStringArray([]string{request.DocId}, recordList[0].Read)
+		userNews.Upload = MergeStringArray([]string{request.DocId}, recordList[0].Upload)
 		err = user.UpdateUserNews(ctx, userNews)
 	} else {
 		err = user.AddUserNews(ctx, userNews)

@@ -16,6 +16,7 @@ type UserNews struct {
 	Like       []string  `json:"like" bson:"like"`     //用户喜欢的news id
 	UnLike     []string  `json:"unlike" bson:"unlike"` //用户不喜欢的news id
 	Read       []string  `json:"read" bson:"read"`     //用户已经阅读的news id
+	Upload     []string  `json:"upload" bson:"upload"` //用户上传的news id
 }
 
 type ListUserNewsCondition struct {
@@ -81,6 +82,7 @@ func UpdateUserNews(ctx *gin.Context, UserNews UserNews) error {
 		Like       []string  `json:"like" bson:"like"`     //用户喜欢的news id
 		UnLike     []string  `json:"unlike" bson:"unlike"` //用户不喜欢的news id
 		Read       []string  `json:"read" bson:"read"`     //用户已经阅读的news id
+		Upload     []string  `json:"upload" bson:"upload"` //用户上传的news id
 	*/
 	if len(UserNews.Like) > 0 {
 		update["like"] = UserNews.Like
@@ -90,6 +92,9 @@ func UpdateUserNews(ctx *gin.Context, UserNews UserNews) error {
 	}
 	if len(UserNews.Read) > 0 {
 		update["read"] = UserNews.Read
+	}
+	if len(UserNews.Upload) > 0 {
+		update["upload"] = UserNews.Upload
 	}
 	options := options.Update().SetUpsert(true) // 设置 upsert 选项
 	filter := bson.M{"_id": UserNews.Uid}

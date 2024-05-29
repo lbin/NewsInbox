@@ -19,6 +19,7 @@ type UpdateUserNewsReq struct {
 	Like   bool   `json:"like"`   //用户喜欢的news id
 	UnLike bool   `json:"unlike"` //用户不喜欢的news id
 	Read   bool   `json:"read"`   //用户已经阅读的news id
+	Upload bool   `json:"upload"` //用户上传的news id
 }
 
 type GetMiniProgramCode struct {
