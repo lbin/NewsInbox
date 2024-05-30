@@ -12,19 +12,19 @@ import (
 )
 
 type DailyInfo struct {
-	NewsId     string    `json:"_id" bson:"_id"`
-	Title      string    `json:"title" bson:"title"`
-	Summary    string    `json:"summary" bson:"summary"`
-	Class      []string  `json:"class" bson:"class"`
-	KeyPoints  string    `json:"key_points" bson:"key_points"`
-	Tags       []string  `json:"tags" bson:"tags"`
-	Products   []string  `json:"products" bson:"products"`
-	Teams      []string  `json:"teams" bson:"teams"`
-	URL        string    `json:"url" bson:"url"`
-	Sender     string    `json:"sender" bson:"sender"`
-	AddPerson  string    `json:"add_person" bson:"add_person"`
-	Published  time.Time `json:"published" bson:"published"`
-	RawContent string    `json:"raw_content" bson:"raw_content"`
+	NewsId    string    `json:"_id" bson:"_id"`
+	Title     string    `json:"title" bson:"title"`
+	Summary   string    `json:"summary" bson:"summary"`
+	Class     []string  `json:"class" bson:"class"`
+	KeyPoints string    `json:"key_points" bson:"key_points"`
+	Tags      []string  `json:"tags" bson:"tags"`
+	Products  []string  `json:"products" bson:"products"`
+	Teams     []string  `json:"teams" bson:"teams"`
+	URL       string    `json:"url" bson:"url"`
+	Sender    string    `json:"sender" bson:"sender"`
+	AddPerson string    `json:"add_person" bson:"add_person"`
+	Published time.Time `json:"published" bson:"published"`
+	// RawContent string    `json:"raw_content" bson:"raw_content"`
 }
 
 type ListDailyInfoCondition struct {
