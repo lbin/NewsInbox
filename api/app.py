@@ -1,9 +1,8 @@
 import json
 import os
 import threading
-import time
 
-from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for
+from flask import Flask, redirect, render_template, request, session, url_for
 
 if not os.environ.get("DEBUG") or os.environ.get("DEBUG").lower() != "true":
     from gevent import monkey
@@ -14,7 +13,6 @@ if not os.environ.get("DEBUG") or os.environ.get("DEBUG").lower() != "true":
     grpc.experimental.gevent.init_gevent()
 
 import logging
-import random
 import sys
 from logging.handlers import RotatingFileHandler
 
@@ -31,6 +29,13 @@ from extensions import (
 )
 from extensions.ext_database import db
 from flask import Response
+
+from newsinbox.common.config import conf, load_config
+from newsinbox.common.logger import logger
+from newsinbox.servers.llm_common_post import get_url_content, sum4all
+from newsinbox.servers.feishu_wrapper import send_to_feishu
+from newsinbox.servers.file_io import load_key_words
+import datetime
 
 # from extensions.ext_login import login_manager
 
@@ -89,10 +94,9 @@ if app.config["TESTING"]:
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
-        return render_template("index.html")
+        return render_template("today.html")
 
-    return redirect(url_for("index"))
-
+    return redirect(url_for("today"))
 
 
 @app.route("/health")
@@ -102,6 +106,23 @@ def health():
         status=200,
         content_type="application/json",
     )
+
+
+@app.route("/summary", methods=["POST"])
+def summary():
+    q_data = request.get_data()
+    data = json.loads(q_data)
+    url = data["url"]
+
+    load_config("schedule/config.json")
+    logger.info(url)
+    raw_content = get_url_content(url)
+    content = sum4all(conf(), raw_content)
+    published = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    key_words, black_words = load_key_words()
+    send_to_feishu(conf(), content, key_words, black_words, url, "MiniAPP", None, published, raw_content)
+
+    return content
 
 
 @app.route("/threads")
@@ -121,4 +142,6 @@ def threads():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001)
+    app.run(host="0.0.0.0", port=6001)
+    # context = (r'/home/ubuntu/ssl/halfjourney.xyz_bundle.pem', r'/home/ubuntu/ssl/halfjourney.xyz.key')
+    # app.run(host="0.0.0.0", port=443, ssl_context=context, debug=True)

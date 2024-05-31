@@ -8,6 +8,7 @@
 ## Installation
 
 ```bash
+python setup.py install --user
 docker-compose -f docker-compose.middleware.yaml -p newsinbox up -d
 nohup celery -A app.celery beat --loglevel INFO &
 nohup celery -A app.celery worker --loglevel INFO -P gevent &
@@ -28,6 +29,10 @@ nohup celery -A app.celery worker --loglevel INFO -P gevent &
 - [x] 人人都是产品经理
 - [x] 少数派
 - [x] Latepost
+- [x] Techcrunch
+- [ ] fastcompany 解析失败, Need VPN
+- [x] theverge
+- [ ] producthunt 解析失败, Need VPN
 - [ ] X
 
 ### 公众号
