@@ -68,17 +68,30 @@ func UpdateUserNews(ctx *gin.Context, request req.UpdateUserNewsReq) user.UserNe
 func GetLikes(request req.UpdateUserNewsReq, likes, unlikes []string) ([]string, []string) {
 
 	if request.Like {
-		likes = append(likes, request.DocId)
+		likes = AddId(request.DocId, likes)
 		//delete unlike doc id
-		unlikes = DeleteId(request.DocId, unlikes)
+		// unlikes = DeleteId(request.DocId, unlikes)
+	} else {
+		likes = DeleteId(request.DocId, likes)
 	}
 	if request.UnLike {
-		unlikes = append(unlikes, request.DocId)
+		unlikes = AddId(request.DocId, unlikes)
 		//delete like doc id
-		likes = DeleteId(request.DocId, likes)
+		// likes = DeleteId(request.DocId, likes)
+	} else {
+		unlikes = DeleteId(request.DocId, unlikes)
 	}
 
 	return likes, unlikes
+}
+
+func AddId(id string, in1 []string) []string {
+	for _, str := range in1 {
+		if str == id {
+			return in1
+		}
+	}
+	return append(in1, id)
 }
 
 func DeleteId(id string, in1 []string) []string {
