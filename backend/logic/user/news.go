@@ -37,17 +37,26 @@ func UpdateUserNews(ctx *gin.Context, request req.UpdateUserNewsReq) user.UserNe
 	userNews.UpdateDate = time.Now()
 	if request.Like {
 		userNews.Like = []string{request.DocId}
+	} else {
+		userNews.Like = []string{}
 	}
 	if request.UnLike {
 		userNews.UnLike = []string{request.DocId}
+	} else {
+		userNews.UnLike = []string{}
 	}
 	if request.Read {
 		userNews.Read = []string{request.DocId}
+	} else {
+		userNews.Read = []string{}
 	}
 	if request.Upload {
 		userNews.Upload = []string{request.DocId}
+	} else {
+		userNews.Upload = []string{}
 	}
 	var err error
+	logger.Infof(ctx, "recodList:%+v", recordList)
 	if len(recordList) > 0 {
 		userNews.Like, userNews.UnLike = GetLikes(request, recordList[0].Like, recordList[0].UnLike)
 		userNews.Read = MergeStringArray([]string{request.DocId}, recordList[0].Read)
