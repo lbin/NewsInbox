@@ -3,7 +3,7 @@ import subprocess
 
 from setuptools import find_packages, setup
 
-version = '0.0.3'
+version = '0.1.11'
 package_name = 'newsinbox'
 cwd = os.path.dirname(os.path.abspath(__file__))
 
