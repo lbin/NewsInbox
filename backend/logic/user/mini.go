@@ -62,6 +62,22 @@ func GetUserMiniProgramInfo(ctx *gin.Context, request req.GetMiniProgramCode) (r
 			logger.Fatalf(ctx, "UpdateUserInfo Failed [result:%+v] [err=%+v]", userInfo, err)
 			return
 		}
+
+		// // TODO 问题，这里新建表，后续请求写不进去，但是重新再登录一次就可以写进去
+		// var userNews user.UserNews
+		// userNews.Uid = userInfo.Uid
+		// userNews.UpdateDate = time.Now()
+		// userNews.Like = []string{}
+		// userNews.UnLike = []string{}
+		// userNews.Read = []string{}
+		// userNews.Upload = []string{}
+		// err = user.AddUserNews(ctx, userNews)
+		// if err != nil {
+		// 	logger.Fatalf(ctx, "UpdateUserNews Failed [result:%+v] [err=%+v]", userNews, err)
+		// 	return
+		// }
+		// time.Sleep(1 * time.Second) // Add a delay of 1 second
+
 	} else {
 		uid = recordList[0].Uid
 	}

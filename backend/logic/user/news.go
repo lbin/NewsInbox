@@ -35,6 +35,7 @@ func UpdateUserNews(ctx *gin.Context, request req.UpdateUserNewsReq) user.UserNe
 	recordList := user.ListUserNews(ctx, condition)
 	userNews.Uid = context.GetUserID(ctx)
 	userNews.UpdateDate = time.Now()
+	logger.Infof(ctx, "UpdateUserNewsReq:%+v", request)
 	if request.Like {
 		userNews.Like = []string{request.DocId}
 	} else {
@@ -56,11 +57,12 @@ func UpdateUserNews(ctx *gin.Context, request req.UpdateUserNewsReq) user.UserNe
 		userNews.Upload = []string{}
 	}
 	var err error
-	logger.Infof(ctx, "recodList:%+v", recordList)
 	if len(recordList) > 0 {
 		userNews.Like, userNews.UnLike = GetLikes(request, recordList[0].Like, recordList[0].UnLike)
+		logger.Infof(ctx, "userNewsLike:%+v", userNews.Like)
 		userNews.Read = MergeStringArray([]string{request.DocId}, recordList[0].Read)
-		userNews.Upload = MergeStringArray([]string{request.DocId}, recordList[0].Upload)
+		userNews.Upload = MergeStringArray(userNews.Upload, recordList[0].Upload)
+		logger.Infof(ctx, "UpdateUserNewsReq:%+v", userNews)
 		err = user.UpdateUserNews(ctx, userNews)
 	} else {
 		err = user.AddUserNews(ctx, userNews)
@@ -83,6 +85,7 @@ func GetLikes(request req.UpdateUserNewsReq, likes, unlikes []string) ([]string,
 	} else {
 		likes = DeleteId(request.DocId, likes)
 	}
+
 	if request.UnLike {
 		unlikes = AddId(request.DocId, unlikes)
 		//delete like doc id
@@ -104,9 +107,8 @@ func AddId(id string, in1 []string) []string {
 }
 
 func DeleteId(id string, in1 []string) []string {
-	//被删除的id可能不在数组中
 	for i, str := range in1 {
-		if str == in1[i] {
+		if str == id {
 			return append(in1[:i], in1[i+1:]...)
 		}
 	}
