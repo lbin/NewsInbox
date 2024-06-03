@@ -27,7 +27,7 @@ services:
     environment:
         NODE_ENV: production
         CACHE_TYPE: redis
-        REDIS_URL: 'redis://:newsinbox123456@redis:6379/0'
+        REDIS_URL: 'redis://:newsinbox123456@redis:6379/4'
         PUPPETEER_WS_ENDPOINT: 'ws://browserless:4000'  # marked
     depends_on:
         - redis

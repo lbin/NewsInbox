@@ -23,6 +23,7 @@ from common.log import logger
 from common.singleton import singleton
 from common.time_check import time_checker
 from newsinbox.common.config import conf, get_appdata_dir
+from newsinbox.servers.feishu_wrapper import send_to_feishu_from_wechat
 from lib import itchat
 from lib.itchat.content import *
 
@@ -246,74 +247,6 @@ class WechatChannel(ChatChannel):
         context = self._compose_context(cmsg.ctype, cmsg.content, isgroup=True, msg=cmsg)
         if context:
             self.produce(context)
-            
-    def send_to_feishu(self, reply, resceiver, group_name=None, nick_name=None):
-
-        feishu_get_token_url = "https://open.feishu.cn/open-apis/auth/v3/app_access_token/internal"
-        feishu_add_record_url = "https://open.feishu.cn/open-apis/bitable/v1/apps/DM8Ib7DNeah45XsA8kOcxvYenHd/tables/tblELLHLYuKXsVf9/records"
-
-        content = reply.content
-        if content is None:
-            return None
-        
-        url = reply.url
-        data_index = content.find("json")
-        user = content[1:data_index-3]
-        user = user.replace("\n", "")
-        
-        user_group = conf().get("user_group")
-        for tmp_user in user_group:
-            if nick_name == tmp_user["user_name"]:
-                user = nick_name
-                feishu_add_record_url = tmp_user["feishu_add_record_url"]
-                break
-        
-        user_group_group = conf().get("user_group_group")
-        for tmp_user in user_group_group:
-            if group_name == tmp_user["user_name"]:
-                # user = nick_name
-                feishu_add_record_url = tmp_user["feishu_add_record_url"]
-                break
-        
-
-        json_data = content[data_index+3:-3]
-        json_data = json_data.replace("\n", "")
-        json_data = json_data.replace(" ", "")
-        json_data = json_data[1:]
-
-        json_data = json.loads(json_data)
-
-        headers = {
-            "Content-Type": "application/json; charset=utf-8"
-            }
-        token_json_data = {
-            "app_id": "cli_a6bafbc7acbdd013",
-            "app_secret": "8U3AAH3AOPtwVOFdWusswctp5EOcqFM5"
-            }
-        feishu_token_response = requests.post(feishu_get_token_url, headers=headers, json=token_json_data)
-
-        feishu_headers = {
-            "Content-Type": "application/json; charset=utf-8",
-            'Authorization': f"Bearer {feishu_token_response.json()['app_access_token']}"
-        }
-
-        key_points_str = ""
-        for key in json_data['key_points']:
-            key_points_str += json_data['key_points'][key] + "\n"
-        
-        tags = json_data["tags"]
-        new_tags = []
-        
-        for tag in tags:
-            tag = tag.replace("#", "")
-            new_tags.append(tag)
-        tags = new_tags
-
-        new_json_data = {'分类': ['Technology'], '标签': tags, '项目来源': '个人分享', '项目名称': json_data['title'], '来源': url, '总结': json_data['summary'], '关键要点': key_points_str, '添加人': user}
-
-        new_data={'fields': new_json_data}
-        status = requests.post(feishu_add_record_url, headers=feishu_headers, json=new_data)
-        return status
 
     @time_checker
     @_check
@@ -338,9 +271,11 @@ class WechatChannel(ChatChannel):
                 is_group = context["isgroup"]
                 logger.info("[WX] sendMsg={}, group_name={}, nick_name={}, is_group={}".format(reply.content, group_name, nick_name, context["isgroup"]))
                 if is_group is False:
-                    self.send_to_feishu(reply, receiver, None, nick_name)
+                    # self.send_to_feishu(reply, receiver, None, nick_name)
+                    send_to_feishu_from_wechat(conf(), reply, None, nick_name)
                 else:
-                    self.send_to_feishu(reply, receiver, group_name, None)
+                    # self.send_to_feishu(reply, receiver, group_name, None)
+                    send_to_feishu_from_wechat(conf(), reply, group_name, None)
             logger.info("[WX] sendMsg={}, receiver={}".format(reply, receiver))
         elif reply.type == ReplyType.ERROR or reply.type == ReplyType.INFO:
             itchat.send(reply.content, toUserName=receiver)

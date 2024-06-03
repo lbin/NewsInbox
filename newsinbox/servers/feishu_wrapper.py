@@ -31,7 +31,75 @@ def _send_to_feishu(config, data):
     status = requests.post(feishu_add_record_url, headers=feishu_headers, json=data)
     return status
 
+def send_to_feishu_from_wechat(config, reply, group_name=None, nick_name=None):
 
+    feishu_get_token_url = "https://open.feishu.cn/open-apis/auth/v3/app_access_token/internal"
+    feishu_add_record_url = "https://open.feishu.cn/open-apis/bitable/v1/apps/DM8Ib7DNeah45XsA8kOcxvYenHd/tables/tblELLHLYuKXsVf9/records"
+
+    content = reply.content
+    if content is None:
+        return None
+        
+    url = reply.url
+    data_index = content.find("json")
+    user = content[1:data_index-3]
+    user = user.replace("\n", "")
+        
+    user_group = config.get("user_group")
+    for tmp_user in user_group:
+        if nick_name == tmp_user["user_name"]:
+            user = nick_name
+            feishu_add_record_url = tmp_user["feishu_add_record_url"]
+            break
+        
+    user_group_group = config.get("user_group_group")
+    for tmp_user in user_group_group:
+        if group_name == tmp_user["user_name"]:
+            # user = nick_name
+            feishu_add_record_url = tmp_user["feishu_add_record_url"]
+            break
+        
+
+    json_data = content[data_index+3:-3]
+    json_data = json_data.replace("\n", "")
+    json_data = json_data.replace(" ", "")
+    json_data = json_data[1:]
+
+    json_data = json.loads(json_data)
+
+    headers = {
+        "Content-Type": "application/json; charset=utf-8"
+        }
+    token_json_data = {
+        "app_id": "cli_a6bafbc7acbdd013",
+        "app_secret": "8U3AAH3AOPtwVOFdWusswctp5EOcqFM5"
+        }
+    feishu_token_response = requests.post(feishu_get_token_url, headers=headers, json=token_json_data)
+
+    feishu_headers = {
+        "Content-Type": "application/json; charset=utf-8",
+        'Authorization': f"Bearer {feishu_token_response.json()['app_access_token']}"
+    }
+
+    key_points_str = ""
+    for key in json_data['key_points']:
+        key_points_str += json_data['key_points'][key] + "\n"
+        
+    tags = json_data["tags"]
+    new_tags = []
+        
+    for tag in tags:
+        tag = tag.replace("#", "")
+        new_tags.append(tag)
+    tags = new_tags
+
+    new_json_data = {'分类': ['Technology'], '标签': tags, '项目来源': '个人分享', '项目名称': json_data['title'], '来源': url, '总结': json_data['summary'], '关键要点': key_points_str, '添加人': user}
+
+    new_data={'fields': new_json_data}
+    status = requests.post(feishu_add_record_url, headers=feishu_headers, json=new_data)
+    return status
+
+# TODO remove title
 def send_to_feishu(config, content, key_words, black_words, url, sender, title=None, published=None, raw_content=None):
     logger.info("content: {}".format(content))
     if content is None:
@@ -106,6 +174,6 @@ def send_to_feishu(config, content, key_words, black_words, url, sender, title=N
                 new_data = {"fields": new_json_data}
                 status = _send_to_feishu(config, new_data)
                 return status
-
+    new_json_data["raw_content"] = raw_content
     save_to_json(new_json_data, sender, False)
     return None
