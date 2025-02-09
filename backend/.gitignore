@@ -1,0 +1,10 @@
+*.exe
+*.dll
+*.o
+*~
+.tmp/
+node_modules/
+vendor/
+runtime/
+main
+learnerai

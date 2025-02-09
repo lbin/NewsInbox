@@ -1,0 +1,19 @@
+app:
+  RuntimeRootPath: runtime/
+  AbsoluteAppPath: /data/logs/learnerai/runtime/
+  LogSavePath: logs/
+  LogSaveName: learnerai
+  LogFileExt: log
+  LogLevel: info
+  TimeFormat: 2006010203
+  ExpireTime: 1
+  InterfaceTimeOut: 3
+
+server:
+  RunMode: release
+  HttpPort: 8099
+  ReadTimeout: 60
+  WriteTimeout: 60
+  ShutDownTimeout: 30
+  ConfigPath: /home/ubuntu/NewsInbox/backend/conf
+  Env: "offline"

@@ -1,0 +1,23 @@
+[tool.ruff]
+exclude = []
+line-length = 180
+
+[tool.ruff.lint]
+ignore-init-module-imports = true
+select = []
+ignore = []
+fixable = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"app.py" = [
+    "F401", # unused-import
+    "F811", # redefined-while-unused
+]
+"__init__.py" = [
+    "F401", # unused-import
+    "F811", # redefined-while-unused
+]
+"tests/*" = [
+    "F401", # unused-import
+    "F811", # redefined-while-unused
+]

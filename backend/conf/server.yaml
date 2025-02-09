@@ -1,0 +1,11 @@
+mongo:
+  User : root
+  Host : 127.0.0.1:27017
+  Password : newsinbox123456
+redis:
+  Host: 127.0.0.1:6379
+  Password: newsinbox123456
+milvus:
+  User: root
+  Password: Milvus
+  Host: 127.0.0.1:19530
