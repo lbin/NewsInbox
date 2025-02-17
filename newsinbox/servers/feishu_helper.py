@@ -147,7 +147,7 @@ def send_to_feishu(config, content, key_words, black_words, url, sender, publish
     json_data["add_person"] = "Bot"
     json_data["published"] = get_time(published)
     # json_data["raw_content"] = raw_content
-    add_news(config, "newsinbox.t_news_daily", json_data)
+    # add_news(config, "newsinbox.t_news_daily", json_data)
 
     new_json_data = {
         "分类": json_data["class"],

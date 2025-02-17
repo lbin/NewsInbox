@@ -48,7 +48,6 @@ replicate~=0.22.0
 websocket-client~=1.7.0
 dashscope[tokenizer]~=1.17.0
 huggingface_hub~=0.16.4
-transformers>=4.38.0
 tokenizers~=0.15.0
 pandas==1.5.3
 xinference-client==0.9.4
@@ -65,7 +64,6 @@ bs4~=0.0.1
 markdown~=3.5.1
 httpx[socks]~=0.24.1
 matplotlib~=3.8.2
-yfinance~=0.2.35
 pydub~=0.25.1
 gmpy2~=2.1.5
 numexpr~=2.9.0
